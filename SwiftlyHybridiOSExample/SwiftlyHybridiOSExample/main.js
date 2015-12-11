@@ -37,21 +37,21 @@ function sendCount(){
 
 function confirmPurchase(){
     var message = {"cmd":"msg","callbackFunc":function(){
-    var username = document.querySelector("#username").value
-    var email = document.querySelector("#email").value
-    var password = document.querySelector("#password").value
-    var confirmPwd = document.querySelector("#confirmPwd").value
-    var monthly = false;
-    var yearly = false;
-    if (document.querySelector("#monthly").checked) {
-        monthly = true;
-        yearly = false;
-    } else if (document.querySelector("#yearly").checked) {
-        monthly = false;
-        yearly = true;
-    }
+        var username = document.querySelector("#username").value
+        var email = document.querySelector("#email").value
+        var password = document.querySelector("#password").value
+        var confirmPwd = document.querySelector("#confirmPwd").value
+        var monthly = false;
+        var yearly = false;
+        if (document.querySelector("#monthly").checked) {
+            monthly = true;
+            yearly = false;
+        } else if (document.querySelector("#yearly").checked) {
+            monthly = false;
+            yearly = true;
+        }
     
-    // TODO: error handling for incorrect user input
+        // TODO: error handling for incorrect user input
 
         return {username, username, email, password, confirmPwd, monthly, yearly}
     }.toString()}
