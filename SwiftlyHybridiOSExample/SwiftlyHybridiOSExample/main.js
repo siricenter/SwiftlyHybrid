@@ -30,30 +30,33 @@ function sendCount(){
     var message = {"cmd":"increment","count":clicks,"callbackFunc":function(responseAsJSON){
         var response = JSON.parse(responseAsJSON)
         clicks = response['count']
-        document.querySelector("#messages_from_java").innerText = "Count is "+clicks
+        document.querySelector("#messages_from_swift").innerText = "Count is "+clicks
     }.toString()}
     native.postMessage(message)
 }
 
 function confirmPurchase(){
-    var message = {"cmd":"msg","callbackFunc":function(){
-        var username = document.querySelector("#username").value
-        var email = document.querySelector("#email").value
-        var password = document.querySelector("#password").value
-        var confirmPwd = document.querySelector("#confirmPwd").value
-        var monthly = false;
-        var yearly = false;
-        if (document.querySelector("#monthly").checked) {
-            monthly = true;
-            yearly = false;
-        } else if (document.querySelector("#yearly").checked) {
-            monthly = false;
-            yearly = true;
-        }
     
-        // TODO: error handling for incorrect user input
-
-        return {username, username, email, password, confirmPwd, monthly, yearly}
+    
+    var username = document.querySelector("#username").value
+    var email = document.querySelector("#email").value
+    var password = document.querySelector("#password").value
+    var confirmPwd = document.querySelector("#confirmPwd").value
+    // TODO: error handling for incorrect user input
+    //do a local pw confirm here
+    //if fails, don't continue
+    var cycle = "month"
+    if (document.querySelector("#yearly").checked) {
+        cycle = "year"
+    }
+    
+    var message = {"cmd":"requestPurchase","userinfo":{"name":username, "mail":email, "pass":password, "cycle":cycle}, "callbackFunc":function(responseAsJSON){//responseAsJSON is what we you back from swift
+        var purchaseResponse = JSON.parse(responseAsJSON)
+        document.querySelector("#messages_from_swift").innerText = "Count is "+purchaseResponse
+        //do ajax on success to setup user on PHP server
+        
+        //then reset the url of the webview to your php server
+        window.location = "http://www.apple.com"
     }.toString()}
     native.postMessage(message)
 }

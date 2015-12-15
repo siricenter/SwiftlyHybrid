@@ -32,7 +32,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler {
     init(theController:ViewController){
         super.init()
         let theConfiguration = WKWebViewConfiguration()
-    
+        
         theConfiguration.userContentController.addScriptMessageHandler(self, name: "native")
         
         
@@ -47,6 +47,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler {
         let sentData = message.body as! NSDictionary
         
         let command = sentData["cmd"] as! String
+        print("command: \(command)")
         var response = Dictionary<String,AnyObject>()
         if command == "increment"{
             guard var count = sentData["count"] as? Int else{
@@ -54,6 +55,10 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler {
             }
             count++
             response["count"] = count
+        }
+        else if command == "requestPurchase"{
+            print("got purchase request \(sentData["userinfo"])")
+            //your purchase code goes here.
         }
         let callbackString = sentData["callbackFunc"] as? String
         sendResponse(response, callback: callbackString)
@@ -78,5 +83,5 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler {
             }
         }
     }
-
+    
 }
