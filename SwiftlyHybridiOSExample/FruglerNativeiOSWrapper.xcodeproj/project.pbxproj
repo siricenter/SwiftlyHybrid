@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		88F1DF1D1C20B5AC00087773 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88F1DF1C1C20B5AC00087773 /* StoreKit.framework */; };
 		9BC1DB1D1BDE7EBA00A20600 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC1DB1C1BDE7EBA00A20600 /* AppDelegate.swift */; };
 		9BC1DB1F1BDE7EBA00A20600 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC1DB1E1BDE7EBA00A20600 /* ViewController.swift */; };
 		9BC1DB221BDE7EBA00A20600 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9BC1DB201BDE7EBA00A20600 /* Main.storyboard */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		88F1DF1C1C20B5AC00087773 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		9BC1DB191BDE7EBA00A20600 /* FruglerNativeiOSWrapper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FruglerNativeiOSWrapper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BC1DB1C1BDE7EBA00A20600 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9BC1DB1E1BDE7EBA00A20600 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -39,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88F1DF1D1C20B5AC00087773 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -48,6 +51,7 @@
 		9BC1DB101BDE7EBA00A20600 = {
 			isa = PBXGroup;
 			children = (
+				88F1DF1C1C20B5AC00087773 /* StoreKit.framework */,
 				9BC1DB1B1BDE7EBA00A20600 /* FruglerNativeiOSWrapper */,
 				9BC1DB1A1BDE7EBA00A20600 /* Products */,
 			);
@@ -112,7 +116,12 @@
 				TargetAttributes = {
 					9BC1DB181BDE7EBA00A20600 = {
 						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = 74L8Z6CY5C;
+						DevelopmentTeam = UP87QBMHU6;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};

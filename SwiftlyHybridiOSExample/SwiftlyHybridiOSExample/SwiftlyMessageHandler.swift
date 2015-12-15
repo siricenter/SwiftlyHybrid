@@ -57,6 +57,9 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler {
             response["count"] = count
         }
         else if command == "requestPurchase"{
+            
+
+            
             print("got purchase request \(sentData["userinfo"])")
             //your purchase code goes here.
         }
