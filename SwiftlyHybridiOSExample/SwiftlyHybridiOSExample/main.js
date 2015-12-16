@@ -45,12 +45,8 @@ function confirmPurchase(){
     // TODO: error handling for incorrect user input
     //do a local pw confirm here
     //if fails, don't continue
-    var cycle = "month"
-    if (document.querySelector("#yearly").checked) {
-        cycle = "year"
-    }
     
-    var message = {"cmd":"requestPurchase","userinfo":{"name":username, "mail":email, "pass":password, "cycle":cycle}, "callbackFunc":function(responseAsJSON){//responseAsJSON is what we you back from swift
+    var message = {"cmd":"requestPurchase","userinfo":{"name":username, "mail":email, "pass":password}, "callbackFunc":function(responseAsJSON){//responseAsJSON is what we you back from swift
         var purchaseResponse = JSON.parse(responseAsJSON)
         document.querySelector("#messages_from_swift").innerText = "Count is "+purchaseResponse
         //do ajax on success to setup user on PHP server
