@@ -35,6 +35,11 @@ function sendCount(){
     native.postMessage(message)
 }
 
+window.onload = function() {
+    var message = {"cmd": "load"}
+    native.postMessage(message)
+}
+
 function confirmPurchase(){
     
     

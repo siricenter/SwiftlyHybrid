@@ -26,8 +26,13 @@ import Foundation
 
 import WebKit
 
-class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler {
+import StoreKit
+
+class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestDelegate, SKPaymentTransactionObserver  {
     var appWebView:WKWebView?
+    
+    var list = [SKProduct]()
+    var p = SKProduct()
     
     init(theController:ViewController){
         super.init()
@@ -57,11 +62,23 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler {
             response["count"] = count
         }
         else if command == "requestPurchase"{
-
-
-            
+            // Handle user info stuff here
+            buyStuff()
             print("got purchase request \(sentData["userinfo"])")
             //your purchase code goes here.
+        }
+        else if command == "load" {
+            // Request payment
+            if(SKPaymentQueue.canMakePayments()) {
+                print("IAP is enabled, loading")
+                let productID = Set(arrayLiteral: "com.myfrugler.frugler.monthly")
+                let request = SKProductsRequest(productIdentifiers: productID)
+                request.delegate = self
+                request.start()
+                
+            } else {
+                print("please enable IAPS")
+            }
         }
         let callbackString = sentData["callbackFunc"] as? String
         sendResponse(response, callback: callbackString)
@@ -87,4 +104,93 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler {
         }
     }
     
+    // Payment Methods
+    
+    func displayPurchase() {
+        print("Purchased")
+    }
+    
+
+    func buyStuff() {
+        for product in list {
+            let prodID = product.productIdentifier
+            if (prodID == "com.myFrugler.frugler.testFree") {
+                p = product
+                break;
+            }
+        }
+    
+        print("buy " + p.productIdentifier)
+        let pay = SKPayment(product: p)
+        SKPaymentQueue.defaultQueue().addTransactionObserver(self)
+        SKPaymentQueue.defaultQueue().addPayment(pay as SKPayment)
+    }
+    
+    
+    func productsRequest(request: SKProductsRequest, didReceiveResponse response: SKProductsResponse) {
+        print("products request")
+        print("product count \(response.products.count)")
+        print("invalid product IDs \(response.invalidProductIdentifiers)")
+        
+        let myProduct = response.products
+        
+        for product in myProduct {
+            print(product.productIdentifier)
+            print(product.localizedTitle)
+            print(product.localizedDescription)
+            print(product.price)
+            
+            list.append(product)
+        }
+    }
+    
+    func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        print("Add Payment")
+        
+        for transaction:SKPaymentTransaction in transactions {
+            let trans = transaction
+            print(trans.error)
+            
+            switch trans.transactionState {
+                
+            case .Purchased:
+                print("Purchasing")
+                print(p.productIdentifier)
+                
+                let prodID = p.productIdentifier as String
+                switch prodID {
+                    case "com.myfrugler.frugler.monthly":
+                        print("monthly payments")
+                        displayPurchase()
+                        // do stuff after they pay here
+                    case "com.myFrugler.frugler.testFree":
+                        print("testFree free purchase")
+                        // pretend to do stuff here
+                        displayPurchase()
+                    default:
+                        print("IAP not setup")
+                }
+                
+                queue.finishTransaction(trans)
+                break;
+            case .Failed:
+                print("Purchase error")
+                queue.finishTransaction(trans)
+                break;
+            default:
+                print("default")
+                break;
+                
+            }
+        }
+    }
+    
+    func paymentQueueRestoreCompletedTransactionsFinished(queue: SKPaymentQueue) {
+        
+    }
+    
+    func finishTransaction(trans:SKPaymentTransaction) {
+        print("finish trans")
+        SKPaymentQueue.defaultQueue().finishTransaction(trans)
+    }
 }

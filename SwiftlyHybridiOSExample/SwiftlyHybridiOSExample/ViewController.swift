@@ -23,66 +23,18 @@ SOFTWARE.
 */
 
 import UIKit
-import StoreKit
 
-class ViewController: UIViewController, SKProductsRequestDelegate, SKPaymentTransactionObserver {
+class ViewController: UIViewController{
     var theHandler:SwiftlyMessageHandler?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         theHandler = SwiftlyMessageHandler(theController: self)
-        
-        // Set IAPS
-        if(SKPaymentQueue.canMakePayments()) {
-            print("IAP is enabled, loading")
-            var productID:NSSet = NSSet(objects: "1_MONTH")
-            var request: SKProductsRequest = SKProductsRequest(productIdentifiers: productID
-                as Set<NSObject>)
-            request.delegate = self
-            request.start()
-        } else {
-            print("please enable IAPS")
-        }
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    var list = [SKProduct]()
-    
-    // Payment handling section
-    func productsRequest(request: SKProductsRequest, didReceiveResponse response: SKProductsResponse) {
-        print("products request")
-        let myProduct = response.products
-        
-        for product in myProduct {
-            print(product.productIdentifier)
-            print(product.localizedTitle)
-            print(product.localizedDescription)
-            print(product.price)
-            
-            list.append(product)
-        }
-    }
-    
-    func paymentQueueRestoreCompletedTransactionsFinished(queue: SKPaymentQueue) {
-        
-    }
-    
-    func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-        
-    }
-    
-//    func finishTransaction(trans:SKPaymentTransaction) {
-//        
-//    }
-//    func paymentQueue(queue: SKPaymentQueue, removedTransactions transactions: [SKPaymentTransaction]) {
-//        <#code#>
-//    }
-    
-    
-    
 }
 
