@@ -52,6 +52,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         let sentData = message.body as! NSDictionary
         
         let command = sentData["cmd"] as! String
+//        let block = sentData["block"] as! String
         print("command: \(command)")
         var response = Dictionary<String,AnyObject>()
         if command == "increment"{
@@ -61,27 +62,32 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
             count++
             response["count"] = count
         }
-        else if command == "requestPurchase"{
+        else if command == "requestMonthlyPurchase"{
             // Handle user info stuff here
-            buyStuff()
+            buyMonthlySub()
             print("got purchase request \(sentData["userinfo"])")
-            //your purchase code goes here.
+            //your purchase code goes here. 
         }
-        else if command == "load" {
-            // Request payment
+        else if command == "onload" {
+            // Request IAPs Info
             if(SKPaymentQueue.canMakePayments()) {
                 print("IAP is enabled, loading")
-                let productID = Set(arrayLiteral: "com.myfrugler.frugler.monthly")
-                let request = SKProductsRequest(productIdentifiers: productID)
-                request.delegate = self
-                request.start()
+//                let productID = Set(arrayLiteral: "com.myfrugler.frugler.monthly")
+//                let request = SKProductsRequest(productIdentifiers: productID)
+//                request.delegate = self
+//                request.start()
                 
             } else {
                 print("please enable IAPS")
             }
         }
-        let callbackString = sentData["callbackFunc"] as? String
-        sendResponse(response, callback: callbackString)
+        
+//        if block == "on" {
+//            print("Block is on")
+//        } else {
+            let callbackString = sentData["callbackFunc"] as? String
+            sendResponse(response, callback: callbackString)            
+//        }
     }
     func sendResponse(aResponse:Dictionary<String,AnyObject>, callback:String?){
         guard let callbackString = callback else{
@@ -108,14 +114,16 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
     
     func displayPurchase() {
         print("Purchased")
+        
     }
     
 
-    func buyStuff() {
+    func buyMonthlySub() {
         for product in list {
             let prodID = product.productIdentifier
-            if (prodID == "com.myFrugler.frugler.testFree") {
+            if (prodID == "com.myfrugler.frugler.monthly") {
                 p = product
+                print("Product = " + p.productIdentifier)
                 break;
             }
         }

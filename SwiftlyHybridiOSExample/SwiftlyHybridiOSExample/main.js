@@ -35,8 +35,9 @@ function sendCount(){
     native.postMessage(message)
 }
 
+// Load data from iTunes
 window.onload = function() {
-    var message = {"cmd": "load"}
+    var message = {"cmd": "onload"}
     native.postMessage(message)
 }
 
@@ -51,13 +52,14 @@ function confirmPurchase(){
     //do a local pw confirm here
     //if fails, don't continue
     
-    var message = {"cmd":"requestPurchase","userinfo":{"name":username, "mail":email, "pass":password}, "callbackFunc":function(responseAsJSON){//responseAsJSON is what we you back from swift
+    var message = {"cmd":"requestMonthlyPurchase","block":"on","userinfo":{"name":username, "mail":email, "pass":password}, "callbackFunc":function(responseAsJSON){//responseAsJSON is what we you back from swift
         var purchaseResponse = JSON.parse(responseAsJSON)
-        document.querySelector("#messages_from_swift").innerText = "Count is "+purchaseResponse
+        //document.querySelector("#messages_from_swift").innerText = "Count is "+purchaseResponse
         //do ajax on success to setup user on PHP server
         
         //then reset the url of the webview to your php server
-        window.location = "http://www.apple.com"
+        window.location = "http://www.apple.com/"
+        document.querySelector("#test").innerText = window.location
     }.toString()}
     native.postMessage(message)
 }
