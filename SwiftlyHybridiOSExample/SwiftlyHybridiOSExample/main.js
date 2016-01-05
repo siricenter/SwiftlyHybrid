@@ -58,8 +58,13 @@ function confirmPurchase(){
         //do ajax on success to setup user on PHP server
         
         //then reset the url of the webview to your php server
-        window.location = "http://www.apple.com/"
+//        window.location = "http://www.apple.com/"
         document.querySelector("#test").innerText = window.location
     }.toString()}
+    native.postMessage(message)
+}
+
+function restorePurchase() {
+    var message = {"cmd": "restorePurchases"}
     native.postMessage(message)
 }

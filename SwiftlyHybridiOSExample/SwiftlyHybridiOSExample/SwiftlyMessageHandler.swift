@@ -72,14 +72,17 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
             // Request IAPs Info
             if(SKPaymentQueue.canMakePayments()) {
                 print("IAP is enabled, loading")
-//                let productID = Set(arrayLiteral: "com.myfrugler.frugler.monthly")
-//                let request = SKProductsRequest(productIdentifiers: productID)
-//                request.delegate = self
-//                request.start()
+                let productID = Set(arrayLiteral: "com.myfrugler.frugler.monthly")
+                let request = SKProductsRequest(productIdentifiers: productID)
+                request.delegate = self
+                request.start()
                 
             } else {
                 print("please enable IAPS")
             }
+        }
+        else if command == "restorePurchases" {
+            restorePurchases()
         }
         
 //        if block == "on" {
@@ -115,6 +118,15 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
     func displayPurchase() {
         print("Purchased")
         
+        let url = NSURL (string: "https://www.google.com")
+        let requestObj = NSURLRequest(URL: url!)
+        appWebView!.loadRequest(requestObj)
+        print("loading webview")
+    }
+    
+    func restorePurchases() {
+        SKPaymentQueue.defaultQueue().addTransactionObserver(self)
+        SKPaymentQueue.defaultQueue().restoreCompletedTransactions()
     }
     
 
@@ -194,11 +206,29 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
     }
     
     func paymentQueueRestoreCompletedTransactionsFinished(queue: SKPaymentQueue) {
-        
+        print("transactions restored")
+        print(queue.transactions)
+        for transaction in queue.transactions {
+            let t : SKPaymentTransaction = transaction
+            
+            let prodID = t.payment.productIdentifier as String
+            
+            switch prodID {
+            case "com.myfrugler.frugler.monthly":
+                print("montly sub")
+                displayPurchase()
+            default:
+                print("IAP not setup")
+            }
+        }
     }
     
     func finishTransaction(trans:SKPaymentTransaction) {
         print("finish trans")
         SKPaymentQueue.defaultQueue().finishTransaction(trans)
     }
+    
+//    func paymentQueue(queue: SKPaymentQueue, removedTransactions transactions: [SKPaymentTransaction]) {
+//        print("remove trans")
+//    }
 }
