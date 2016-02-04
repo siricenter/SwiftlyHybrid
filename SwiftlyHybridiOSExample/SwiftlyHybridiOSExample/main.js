@@ -26,7 +26,22 @@
 
 var clicks = 0
 
-var theURL = "https://www.google.com/"
+var theURL = 'http://ec2-54-152-204-90.compute-1.amazonaws.com'
+var theURL = 'https://www.google.com/'
+
+// set the root domain location for development, stage, or production
+var sysRoot = 'staging'
+
+var servicesRoot = ''
+if (sysRoot == 'local') {
+    servicesRoot = 'http://localhost/f5admin/services/'
+} else if (sysRoot == 'staging') {
+    servicesRoot = 'http://ec2-54-152-204-90.compute-1.amazonaws.com/services/'
+} else if (sysRoot == 'prod') {
+    servicesRoot = 'https://www.f5admin.com/services/'
+} else {
+    var rootError = 'Code location specified incorrectly'
+}
 
 function sendCount(){
     /*toString MUST be called on the callbackFunc function object or the
@@ -72,6 +87,8 @@ var displayError = function() {
 }
 
 function confirmPurchase() {
+    message = {"cmd":"log", "string":"does this work?"}
+    native.postMessage(message)
     document.querySelector(".req_fields").style.display = "none";
     var message = ""
     var email = document.querySelector("#email").value
@@ -84,13 +101,76 @@ function confirmPurchase() {
     if (email && confEmail && password && confirmPwd) {
         if (confirmPwd == password && confEmail == email) {
             //{"name":username, "mail":email, "pass":password}
-            
-            message = {"cmd":"requestMonthlyPurchase","userinfo":{"email":email, "pass":password}, "callbackFunc":function(responseAsJSON){//responseAsJSON is what we you back from swift
+
+            message = {"cmd":"requestMonthlyPurchase","userinfo":{"email":email, "pass":password}, "callbackFunc":function(responseAsJSON){//responseAsJSON is what we get back from swift
                 var purchaseResponse = JSON.parse(responseAsJSON)
                 //document.querySelector("#messages_from_swift").innerText = "Count is "+purchaseResponse
                 
+                // just testing if callback is getting called
+//                message = {"cmd":"log", "string":"This is a test for the callback"}
+//                native.postMessage(message)
+                
                 //do ajax on success to setup user on PHP server
                 
+                // do ajax, on success setup user on PHP server
+                var xhr = new XMLHttpRequest()
+                var postUrl = servicesRoot + '/sec.php'
+                
+                xhr.open("POST", postUrl, true)
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+                
+                var message2 = ""
+                // set up the stateChange callback
+                var theReadyState;
+                var theStatus;
+                
+                xhr.onreadystatechange = function() {
+                    
+                    theReadyState = xhr.readyState
+                    theStatus = xhr.status
+                    
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        var acctcreateResponse = JSON.parse(xhr.responseText);
+                        acctcreateCallback(acctcreateResponse);
+                    }
+                }
+
+                message2 = {"cmd":"log", "string": theReadyState + " " + theStatus}
+                
+                native.postMessage(message2)
+                
+                var readyState = xhr.readyState
+                message = {"cmd":"log", "string": readyState + " " + xhr.status}
+                native.postMessage(message)
+
+                
+                //TODO: find out what to put in place of the term variable for a month term.
+                //TODO: Find out what to replace the "stripetoken" variable with.
+                //TODO: Might need to wrap the call back in an actual function and only sent the function name
+//                xhr.send(JSON.stringify({
+//                                        "username": email,
+//                                        "email": email,
+//                                        "password": password,
+//                                        "promocode": "",
+//                                        "term": "1",
+//                                        "stripetoken": "",
+//                                        "req": "acctcreate"
+//                                        }))
+                var data = JSON.stringify({"called":"sec",
+                                          "params":{
+                                          "sentdata":[{
+                                                      "username": email,
+                                                      "email": email,
+                                                      "password": password,
+                                                      "promocode":"",
+                                                      "term": "1",
+                                                      "stripetoken": applegoogleToken ,
+                                                      "req": "acctcreate"
+                                                      }]}})
+                
+                xhr.send(data)
+//                message = {"cmd":"log", "string": "HERE!!!!!!!!!!!!!!!!!!!!!!" + xhr.readyState + " " + xhr.status}
+//                native.postMessage(message)
                 
                 //					replacePageWithURL(theURL)
                 // replacePageWithURL("http://ec2-54-152-204-90.compute-1.amazonaws.com/app/")
@@ -100,13 +180,13 @@ function confirmPurchase() {
                 document.querySelector("#test").innerText = window.location
             }.toString()}
         } else {
-            message = {"cmd":"errorMsg", "msg":"Email or passwords do not match"}
+            message = {"cmd":"log", "string":"Email or passwords do not match"}
             document.querySelector("#login_error").innerText = "* Email or passwords do not match"
             //				document.querySelector(".req_fields").style.display = "block"
             displayError()
         }
     } else {
-        message = {"cmd":"errorMsg", "msg":"Required fields must be entered"}
+        message = {"cmd":"log", "string":"Required fields must be entered"}
         document.querySelector("#login_error").innerText = "* Required fields must be entered"
         //			document.querySelector(".req_fields").style.display = "block"
         displayError()
@@ -114,6 +194,15 @@ function confirmPurchase() {
 //    var messageAsString = JSON.stringify(message)
     native.postMessage(message)
 }
+
+// callback function that runs after creating the user in sec.php
+//function acctcreateCallback(data){
+    // body of the callback after user has been created
+    // TODO: check the data object returned from sec.php to see if everything went well
+    
+    // if everything is good send the user on to the app webview
+    // replacePageWithURL("http://ec2-54-152-204-90.compute-1.amazonaws.com/app/")
+//}
 
 function replacePageWithURL(aURL){
     if(aURL){

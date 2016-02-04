@@ -107,11 +107,51 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
             print("isSubed: ", isSubed.stringForKey("subed"))
             //displayPurchase()
         }
-        else if command == "load_page" {
-            
+        else if command == "sendJSON" {
+//  Swift POST json call verson *-*-*Broken*-*-*
+//            let url = NSURL(string: "")
+//            let request = NSMutableURLRequest(URL: url!)
+//            request.HTTPMethod = "POST"
+//            
+//            let postString = ""
+//            
+//            request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding);
+//            
+//            let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
+//                data, response, error in
+//                
+//                if error != nil
+//                {
+//                    print("error=\(error)")
+//                    return
+//                }
+//                
+//                // You can print out response object
+//                print("response = \(response)")
+//                
+//                // Print out response body
+//                let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+//                print("responseString = \(responseString)")
+//                
+//                //Let’s convert response sent from a server side script to a NSDictionary object:
+//                
+//                let myJSON = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
+//                
+//                if let parseJSON = myJSON {
+//                    // Now we can access value of First Name by its key
+//                    let firstNameValue = parseJSON["firstName"] as? String
+//                    print("firstNameValue: \(firstNameValue)")
+//                }
+//            }
+//            
+//            task.resume()
         }
         else if command == "restorePurchases" {
             restorePurchases()
+        }
+        else if command == "log" {
+            let value = sentData["string"] as? String
+            print("JS: \(value)")
         }
         let callbackString = sentData["callbackFunc"] as? String
         sendResponse(response, callback: callbackString)
