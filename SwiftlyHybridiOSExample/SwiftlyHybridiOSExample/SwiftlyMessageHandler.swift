@@ -43,15 +43,55 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         theConfiguration.userContentController.addScriptMessageHandler(self, name: "native")
         
         
-//        let indexHTMLPath = NSBundle.mainBundle().pathForResource("index", ofType: "html")
         appWebView = WKWebView(frame: theController.view.frame, configuration: theConfiguration)
+//        let indexHTMLPath = NSBundle.mainBundle().pathForResource("index", ofType: "html")
 //        let url = NSURL(fileURLWithPath: indexHTMLPath!)
 //        let url = NSURL(string: "http://ec2-54-152-204-90.compute-1.amazonaws.com/app/")!
-        //let url = NSURL(string: "https://www.google.com/")
-        displayRegistration()
+//        let url = NSURL(string: "https://www.google.com/")
+        
 //        let request = NSURLRequest(URL: url)
 //        appWebView!.loadRequest(request)
         theController.view.addSubview(appWebView!)
+        
+        if let subed = isSubed.stringForKey("subed") {
+            if (subed == "YES"){
+                
+                //TODO: should be checking the reciept for most accurate subscription status
+                // Only access site if user has subscribed
+                displayPurchase()
+                
+            } else {
+                
+                // link to apple in app billing
+//                if(SKPaymentQueue.canMakePayments()) {
+//                    print("IAP is enabled, loading")
+//                    let productID = Set(arrayLiteral: "com.myfrugler.frugler.monthly")
+//                    let request = SKProductsRequest(productIdentifiers: productID)
+//                    request.delegate = self
+//                    request.start()
+//                    
+//                } else {
+//                    print("please enable IAPS")
+//                }
+                
+                linkInAppBilling()
+                
+                //TODO: add transaction queue observer here
+                
+                // Stay on registration screen
+                displayRegistration()
+            }
+        } else {
+            // User has not subscribed subed is null
+            linkInAppBilling()
+            displayRegistration()
+        }
+
+    }
+    
+    func linkInAppBilling() {
+        isSubed.setObject("NO", forKey: "subed")
+
         
         // link to apple in app billing
         if(SKPaymentQueue.canMakePayments()) {
@@ -65,6 +105,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
             print("please enable IAPS")
         }
     }
+    
     func userContentController(userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
         let sentData = message.body as! NSDictionary
         
@@ -84,13 +125,22 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         else if command == "requestMonthlyPurchase"{
             // Handle user info stuff here
             buyMonthlySub()
+            
+//            let userInfo = sentData["userInfo"]
+//            
+//            let email = userInfo?["email"] as? String
+//            let password = userInfo?["password"] as? String
+//            
+//            response["email"] = email
+//            response["password"] = password
+//            
             print("got purchase request \(sentData["userinfo"])")
             //your purchase code goes here. 
         }
         else if command == "onload" {
             // Request IAPs Info
-//            restorePurchases()  // TODO: figure out if this is the best way to do check if the app has already been purchased
-            print("isSubed: ", isSubed.stringForKey("subed"))
+            restorePurchases()  // TODO: figure out if this is the best way to do check if the app has already been purchased
+            print("isSubed before: ", isSubed.stringForKey("subed"))
             if let subed = isSubed.stringForKey("subed") {
                 if (subed == "YES"){
                     
@@ -104,47 +154,8 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                 // User has not subscribed
                 isSubed.setObject("NO", forKey: "subed")
             }
-            print("isSubed: ", isSubed.stringForKey("subed"))
+            print("isSubed after: ", isSubed.stringForKey("subed"))
             //displayPurchase()
-        }
-        else if command == "sendJSON" {
-//  Swift POST json call verson *-*-*Broken*-*-*
-//            let url = NSURL(string: "")
-//            let request = NSMutableURLRequest(URL: url!)
-//            request.HTTPMethod = "POST"
-//            
-//            let postString = ""
-//            
-//            request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding);
-//            
-//            let task = NSURLSession.sharedSession().dataTaskWithRequest(request) {
-//                data, response, error in
-//                
-//                if error != nil
-//                {
-//                    print("error=\(error)")
-//                    return
-//                }
-//                
-//                // You can print out response object
-//                print("response = \(response)")
-//                
-//                // Print out response body
-//                let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
-//                print("responseString = \(responseString)")
-//                
-//                //Let’s convert response sent from a server side script to a NSDictionary object:
-//                
-//                let myJSON = NSJSONSerialization.JSONObjectWithData(data!, options: .MutableLeaves) as? NSDictionary
-//                
-//                if let parseJSON = myJSON {
-//                    // Now we can access value of First Name by its key
-//                    let firstNameValue = parseJSON["firstName"] as? String
-//                    print("firstNameValue: \(firstNameValue)")
-//                }
-//            }
-//            
-//            task.resume()
         }
         else if command == "restorePurchases" {
             restorePurchases()
@@ -152,6 +163,10 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         else if command == "log" {
             let value = sentData["string"] as? String
             print("JS: \(value)")
+        } else if command == "displayApp" {
+            let value = sentData["string"] as? String
+            print("displayApp: \(value)")
+            //displayPurchase()
         }
         let callbackString = sentData["callbackFunc"] as? String
         sendResponse(response, callback: callbackString)
@@ -185,7 +200,6 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
     
     func displayPurchase() {
         print("start displayPurchase")
-        // TODO: figure out why our link doesn't work
         let url = NSURL (string: "http://ec2-54-152-204-90.compute-1.amazonaws.com/app")
 //        let url = NSURL (string: "https://www.google.com")
         let requestObj = NSURLRequest(URL: url!)
@@ -196,11 +210,12 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
     func displayRegistration() {
         let indexHTMLPath = NSBundle.mainBundle().pathForResource("index", ofType: "html")
         let url = NSURL(fileURLWithPath: indexHTMLPath!)
-        //        let url = NSURL(string: "http://ec2-54-152-204-90.compute-1.amazonaws.com/app/")!
-        //let url = NSURL(string: "https://www.google.com/")
+//        let url = NSURL(string: "http://ec2-54-152-204-90.compute-1.amazonaws.com/app/")!
+//        let url = NSURL(string: "https://www.google.com/")
         
         let request = NSURLRequest(URL: url)
         appWebView!.loadRequest(request)
+        print("registration displayed")
     }
     
     func restorePurchases() {
@@ -221,7 +236,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
             }
         }
     
-        print("buy " + p.productIdentifier)
+        print("Buy " + p.productIdentifier)
         let pay = SKPayment(product: p)
         SKPaymentQueue.defaultQueue().addTransactionObserver(self)
         SKPaymentQueue.defaultQueue().addPayment(pay as SKPayment)
@@ -238,21 +253,18 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         print(myProduct)
         
         for product in myProduct {
-            print(product.productIdentifier)
-            print(product.localizedTitle)
-            print(product.localizedDescription)
-            print(product.price)
-            
+            print(product.productIdentifier, " | ", product.localizedTitle, " | ", product.localizedDescription, " | ", product.price)            
             list.append(product)
         }
     }
     
     func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-        print("start paymentQueue")
+        print("start paymentQueue") //itunes signin popup showing up about here
         
         for transaction:SKPaymentTransaction in transactions {
             let trans = transaction
-            print(trans.error)
+//            print("trans.error: ", trans.error)
+//            print("trans.transactionState: ", trans.transactionState.rawValue)
             
             switch trans.transactionState {
                 
@@ -267,8 +279,8 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         isSubed.setObject("YES", forKey: "subed")
                         print("isSubed: ", isSubed.stringForKey("subed"))
-                        displayPurchase()
-                        return
+//                        displayPurchase()
+//                        return
                         // do stuff after they pay here
 //                    case "com.myFrugler.frugler.testFree":
 //                        print("testFree free purchase")
@@ -278,17 +290,20 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                         print("IAP not setup")
                         isSubed.setValue("NO", forKey: "subed")
                 }
-                
                 queue.finishTransaction(trans)
                 break
             case .Failed:
                 print("Purchase error")
-                queue.finishTransaction(trans)
                 isSubed.setValue("NO", forKey: "subed")
+                queue.finishTransaction(trans)
+                //TODO: need to display failure error
                 displayRegistration()
                 break
+            case .Purchasing:
+                print("Purchasing right now")
+                break
             default:
-                print("default")
+//                print("purchasing queue default")
                 break
                 
             }
@@ -307,7 +322,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
             switch prodID {
             case "com.myfrugler.frugler.monthly":
                 print("monthly sub")
-                displayPurchase()
+//                displayPurchase()
                 return
             default:
                 print("IAP not setup")

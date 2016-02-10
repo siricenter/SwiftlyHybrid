@@ -147,7 +147,7 @@ input:focus {
     color: #143756;
     font-size: 1.2em;
 }
-#purchase-btn {
+#purchase-btn, #processing-btn {
     color: black;
     box-shadow: 5px 5px 5px rgba(130,125,130,0.3);;
     -webkit-box-shadow: 5px 5px 5px 0px rgba(130,125,130,0.3);
@@ -160,6 +160,9 @@ input:focus {
     font-weight: bold;
     margin: 0 0 35px;
     font-family: arial;
+}
+#processing-btn {
+    display: none;
 }
 #small-btn-wrapper {
     display: flex;

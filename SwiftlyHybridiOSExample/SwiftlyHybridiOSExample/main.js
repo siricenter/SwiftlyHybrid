@@ -36,7 +36,7 @@ var servicesRoot = ''
 if (sysRoot == 'local') {
     servicesRoot = 'http://localhost/f5admin/services/'
 } else if (sysRoot == 'staging') {
-    servicesRoot = 'http://ec2-54-152-204-90.compute-1.amazonaws.com/services/'
+    servicesRoot = 'http://ec2-54-152-204-90.compute-1.amazonaws.com/services'
 } else if (sysRoot == 'prod') {
     servicesRoot = 'https://www.f5admin.com/services/'
 } else {
@@ -77,7 +77,7 @@ window.onload = function() {
     }.toString()
     }
 //    var messageAsString = JSON.stringify(message)
-    native.postMessage(message)
+//    native.postMessage(message)
 }
 
 var displayError = function() {
@@ -87,97 +87,113 @@ var displayError = function() {
 }
 
 function confirmPurchase() {
-    message = {"cmd":"log", "string":"does this work?"}
+    message = {"cmd":"log", "string":"does this confirm button work?"}
     native.postMessage(message)
     document.querySelector(".req_fields").style.display = "none";
     var message = ""
+    var purchaseBtn = document.querySelector("#purchase-btn")
+    var processingBtn = document.querySelector("#processing-btn")
     var email = document.querySelector("#email").value
     var confEmail = document.querySelector("#confEmail").value
     var password = document.querySelector("#password").value
     var confirmPwd = document.querySelector("#confirmPwd").value
+    
+    message = {"cmd":"log", "string": "email contents outside: " + email}
+    native.postMessage(message)
     // TODO: error handling for incorrect user input
     //do a local pw confirm here
     //if fails, don't continue
     if (email && confEmail && password && confirmPwd) {
         if (confirmPwd == password && confEmail == email) {
             //{"name":username, "mail":email, "pass":password}
+            
+            purchaseBtn.style.display = "none"
+            processingBtn.style.display = "block"
 
-            message = {"cmd":"requestMonthlyPurchase","userinfo":{"email":email, "pass":password}, "callbackFunc":function(responseAsJSON){//responseAsJSON is what we get back from swift
+            message = {"cmd":"requestMonthlyPurchase", "callbackFunc":function(responseAsJSON){//responseAsJSON is what we get back from swift
                 var purchaseResponse = JSON.parse(responseAsJSON)
                 //document.querySelector("#messages_from_swift").innerText = "Count is "+purchaseResponse
                 
                 // just testing if callback is getting called
-//                message = {"cmd":"log", "string":"This is a test for the callback"}
-//                native.postMessage(message)
                 
                 //do ajax on success to setup user on PHP server
                 
                 // do ajax, on success setup user on PHP server
                 var xhr = new XMLHttpRequest()
-                var postUrl = servicesRoot + '/sec.php'
+                var postUrl = servicesRoot + '/sec.php/'
                 
+                message = {"cmd":"log", "string": "email contents inside: " + email}
+                native.postMessage(message)
+                message = {"cmd":"log", "string": "email contents: " + purchaseResponse.value}
+                native.postMessage(message)
+                
+                xhr.onreadystatechange = function() {
+                    message = {"cmd":"log", "string": "inside onreadystatechange " + xhr.readyState + " " + xhr.status}
+                    native.postMessage(message)
+                    
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        message = {"cmd":"log", "string": "works! onreadystatechange " + xhr.readyState + " " + xhr.status}
+                        var acctcreateResponse = JSON.parse(xhr.responseText);
+                        
+                        if (!acctcreateResponse.errmsg) {
+                            message = {"cmd":"displayApp", "string": "Ready to display app " + xhr.responseText		 }
+                            native.postMessage(message)
+                            //acctcreateCallback(acctcreateResponse);
+                        } else {
+                            message = {"cmd":"log", "string": "Error from sec.php: " + acctcreateResponse.errmsg}
+                            native.postMessage(message)
+                        }
+                    }
+                    
+
+                }
                 xhr.open("POST", postUrl, true)
                 xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
                 
-                var message2 = ""
-                // set up the stateChange callback
-                var theReadyState;
-                var theStatus;
-                
-                xhr.onreadystatechange = function() {
-                    
-                    theReadyState = xhr.readyState
-                    theStatus = xhr.status
-                    
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        var acctcreateResponse = JSON.parse(xhr.responseText);
-                        acctcreateCallback(acctcreateResponse);
-                    }
-                }
-
-                message2 = {"cmd":"log", "string": theReadyState + " " + theStatus}
-                
-                native.postMessage(message2)
-                
                 var readyState = xhr.readyState
-                message = {"cmd":"log", "string": readyState + " " + xhr.status}
+                message = {"cmd":"log", "string": "outside onreadystatechange " + readyState + " " + xhr.status}
                 native.postMessage(message)
 
                 
                 //TODO: find out what to put in place of the term variable for a month term.
                 //TODO: Find out what to replace the "stripetoken" variable with.
                 //TODO: Might need to wrap the call back in an actual function and only sent the function name
-//                xhr.send(JSON.stringify({
-//                                        "username": email,
-//                                        "email": email,
-//                                        "password": password,
-//                                        "promocode": "",
-//                                        "term": "1",
-//                                        "stripetoken": "",
-//                                        "req": "acctcreate"
-//                                        }))
-                var data = JSON.stringify({"called":"sec",
-                                          "params":{
-                                          "sentdata":[{
-                                                      "username": email,
-                                                      "email": email,
-                                                      "password": password,
-                                                      "promocode":"",
-                                                      "term": "1",
-                                                      "stripetoken": applegoogleToken ,
-                                                      "req": "acctcreate"
-                                                      }]}})
+//                var data = "hello world!"
+
+//                var data = JSON.stringify({"called":"sec",
+//                                          "params":{
+//                                          "sentdata":[{
+//                                                      "lgs": "app",
+//                                                      "username": email,
+//                                                      "email": email,
+//                                                      "password": password,
+//                                                      "promocode":"",
+//                                                      "term": "1",
+//                                                      "stripetoken": "applegoogleToken",
+//                                                      "req": "acctcreate"
+//                                                      }]}})
+                
+                var data = JSON.stringify({"sentdata": [{
+                                                        "username": email.value,
+                                                        "email": email.value,
+                                                        "password": password.value,
+                                                        "promocode":"",
+                                                        "term": "1",
+                                                        "stripetoken": "applegoogleToken",
+                                                        "req": "acctcreate"
+                                                        }]})
+                document.querySelector("#test").innerText = email.value + " " + password.value
+                
+                message = {"cmd":"log", "string": "email after data def: " + data}
+                native.postMessage(message)
+
                 
                 xhr.send(data)
-//                message = {"cmd":"log", "string": "HERE!!!!!!!!!!!!!!!!!!!!!!" + xhr.readyState + " " + xhr.status}
-//                native.postMessage(message)
                 
-                //					replacePageWithURL(theURL)
-                // replacePageWithURL("http://ec2-54-152-204-90.compute-1.amazonaws.com/app/")
                 
                 
                 //then reset the url of the webview to your php server
-                document.querySelector("#test").innerText = window.location
+                //document.querySelector("#test").innerText = window.location
             }.toString()}
         } else {
             message = {"cmd":"log", "string":"Email or passwords do not match"}
