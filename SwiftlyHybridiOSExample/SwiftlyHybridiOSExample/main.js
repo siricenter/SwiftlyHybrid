@@ -136,6 +136,8 @@ function confirmPurchase() {
                         var acctcreateResponse = JSON.parse(xhr.responseText);
                         
                         if (!acctcreateResponse.errmsg) {
+                            message = {"cmd":"log", "string": "response stuff: " + acctcreateResponse.user_id}
+                            native.postMessage(message)
                             message = {"cmd":"displayApp", "string": "Ready to display app " + xhr.responseText		 }
                             native.postMessage(message)
                             //acctcreateCallback(acctcreateResponse);

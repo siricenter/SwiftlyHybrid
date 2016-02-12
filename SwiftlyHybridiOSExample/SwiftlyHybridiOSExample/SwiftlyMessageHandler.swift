@@ -166,7 +166,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         } else if command == "displayApp" {
             let value = sentData["string"] as? String
             print("displayApp: \(value)")
-            //displayPurchase()
+            displayPurchase()
         }
         let callbackString = sentData["callbackFunc"] as? String
         sendResponse(response, callback: callbackString)
