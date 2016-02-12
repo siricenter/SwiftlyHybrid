@@ -64,8 +64,6 @@ function sendCount(){
 
 window.onload = function() {
     // get the sub information from Google Play
-    //replacePageWithURL("http://ec2-54-152-204-90.compute-1.amazonaws.com/app/")
-    //replacePageWithURL("https://www.google.com")
     var message = {"cmd":"onload", "callbackFunc":function(responseAsJSON){
         
 //        var response = JSON.parse(responseAsJSON)
@@ -74,7 +72,7 @@ window.onload = function() {
 //        if (token != null) {
 //            replacePageWithURL(theURL)
 //        }
-    }.toString()
+        }.toString()
     }
 //    var messageAsString = JSON.stringify(message)
 //    native.postMessage(message)
@@ -112,11 +110,6 @@ function confirmPurchase() {
 
             message = {"cmd":"requestMonthlyPurchase", "callbackFunc":function(responseAsJSON){//responseAsJSON is what we get back from swift
                 var purchaseResponse = JSON.parse(responseAsJSON)
-                //document.querySelector("#messages_from_swift").innerText = "Count is "+purchaseResponse
-                
-                // just testing if callback is getting called
-                
-                //do ajax on success to setup user on PHP server
                 
                 // do ajax, on success setup user on PHP server
                 var xhr = new XMLHttpRequest()
@@ -160,20 +153,6 @@ function confirmPurchase() {
                 //TODO: find out what to put in place of the term variable for a month term.
                 //TODO: Find out what to replace the "stripetoken" variable with.
                 //TODO: Might need to wrap the call back in an actual function and only sent the function name
-//                var data = "hello world!"
-
-//                var data = JSON.stringify({"called":"sec",
-//                                          "params":{
-//                                          "sentdata":[{
-//                                                      "lgs": "app",
-//                                                      "username": email,
-//                                                      "email": email,
-//                                                      "password": password,
-//                                                      "promocode":"",
-//                                                      "term": "1",
-//                                                      "stripetoken": "applegoogleToken",
-//                                                      "req": "acctcreate"
-//                                                      }]}})
                 
                 var data = JSON.stringify({"sentdata": [{
                                                         "username": email.value,

@@ -44,13 +44,6 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         
         
         appWebView = WKWebView(frame: theController.view.frame, configuration: theConfiguration)
-//        let indexHTMLPath = NSBundle.mainBundle().pathForResource("index", ofType: "html")
-//        let url = NSURL(fileURLWithPath: indexHTMLPath!)
-//        let url = NSURL(string: "http://ec2-54-152-204-90.compute-1.amazonaws.com/app/")!
-//        let url = NSURL(string: "https://www.google.com/")
-        
-//        let request = NSURLRequest(URL: url)
-//        appWebView!.loadRequest(request)
         theController.view.addSubview(appWebView!)
         
         if let subed = isSubed.stringForKey("subed") {
@@ -61,22 +54,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                 displayPurchase()
                 
             } else {
-                
-                // link to apple in app billing
-//                if(SKPaymentQueue.canMakePayments()) {
-//                    print("IAP is enabled, loading")
-//                    let productID = Set(arrayLiteral: "com.myfrugler.frugler.monthly")
-//                    let request = SKProductsRequest(productIdentifiers: productID)
-//                    request.delegate = self
-//                    request.start()
-//                    
-//                } else {
-//                    print("please enable IAPS")
-//                }
-                
                 linkInAppBilling()
-                
-                //TODO: add transaction queue observer here
                 
                 // Stay on registration screen
                 displayRegistration()
@@ -112,7 +90,6 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         print("start userContentController")
         
         let command = sentData["cmd"] as! String
-//        let block = sentData["block"] as! String
         print("command: \(command)")
         var response = Dictionary<String,AnyObject>()
         if command == "increment"{
@@ -125,15 +102,6 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         else if command == "requestMonthlyPurchase"{
             // Handle user info stuff here
             buyMonthlySub()
-            
-//            let userInfo = sentData["userInfo"]
-//            
-//            let email = userInfo?["email"] as? String
-//            let password = userInfo?["password"] as? String
-//            
-//            response["email"] = email
-//            response["password"] = password
-//            
             print("got purchase request \(sentData["userinfo"])")
             //your purchase code goes here. 
         }
@@ -155,7 +123,6 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                 isSubed.setObject("NO", forKey: "subed")
             }
             print("isSubed after: ", isSubed.stringForKey("subed"))
-            //displayPurchase()
         }
         else if command == "restorePurchases" {
             restorePurchases()
@@ -173,7 +140,6 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
     }
     func sendResponse(aResponse:Dictionary<String,AnyObject>, callback:String?){
         print("start sendResponse")
-//        print(callback)
         guard let callbackString = callback else{
             return
         }
@@ -200,8 +166,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
     
     func displayPurchase() {
         print("start displayPurchase")
-        let url = NSURL (string: "http://ec2-54-152-204-90.compute-1.amazonaws.com/app")
-//        let url = NSURL (string: "https://www.google.com")
+        let url = NSURL (string: "http://ec2-54-152-204-90.compute-1.amazonaws.com/app") //TODO: might need to add a request string to this
         let requestObj = NSURLRequest(URL: url!)
         appWebView!.loadRequest(requestObj)
         print("loading webview")
@@ -210,8 +175,6 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
     func displayRegistration() {
         let indexHTMLPath = NSBundle.mainBundle().pathForResource("index", ofType: "html")
         let url = NSURL(fileURLWithPath: indexHTMLPath!)
-//        let url = NSURL(string: "http://ec2-54-152-204-90.compute-1.amazonaws.com/app/")!
-//        let url = NSURL(string: "https://www.google.com/")
         
         let request = NSURLRequest(URL: url)
         appWebView!.loadRequest(request)
@@ -279,13 +242,6 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         isSubed.setObject("YES", forKey: "subed")
                         print("isSubed: ", isSubed.stringForKey("subed"))
-//                        displayPurchase()
-//                        return
-                        // do stuff after they pay here
-//                    case "com.myFrugler.frugler.testFree":
-//                        print("testFree free purchase")
-                        // pretend to do stuff here
-//                        displayPurchase()
                     default:
                         print("IAP not setup")
                         isSubed.setValue("NO", forKey: "subed")
@@ -315,14 +271,11 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         print(queue.transactions)
         for transaction in queue.transactions {
             let t : SKPaymentTransaction = transaction
-
-//            print(t.description)
             let prodID = t.payment.productIdentifier as String
             print(prodID)
             switch prodID {
             case "com.myfrugler.frugler.monthly":
                 print("monthly sub")
-//                displayPurchase()
                 return
             default:
                 print("IAP not setup")
@@ -334,8 +287,4 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         print("start finishTransaction")
         SKPaymentQueue.defaultQueue().finishTransaction(trans)
     }
-    
-//    func paymentQueue(queue: SKPaymentQueue, removedTransactions transactions: [SKPaymentTransaction]) {
-//        print("remove trans")
-//    }
 }
