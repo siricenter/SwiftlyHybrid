@@ -126,14 +126,19 @@ function confirmPurchase() {
                     
                     if (xhr.readyState == 4 && xhr.status == 200) {
                         message = {"cmd":"log", "string": "works! onreadystatechange " + xhr.readyState + " " + xhr.status}
+                        native.postMessage(message)
                         var acctcreateResponse = JSON.parse(xhr.responseText);
                         
                         if (!acctcreateResponse.errmsg) {
                             message = {"cmd":"log", "string": "response stuff: " + acctcreateResponse.user_id}
                             native.postMessage(message)
-                            message = {"cmd":"displayApp", "string": "Ready to display app " + xhr.responseText		 }
-                            native.postMessage(message)
-                            //acctcreateCallback(acctcreateResponse);
+                            
+                            var ePass = CryptoJS.AES.encrypt(password.value, "Frugler:dealzfordayz!")
+//                            message = {"cmd":"log", "string": "after CryptoKey password: " + ePass}
+//                            native.postMessage(message)
+                            
+                            // TODO: or get this to work
+                            replacePageWithURL("http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email=\"" + email + "\"&?password=\"" + ePass + "\"")
                         } else {
                             message = {"cmd":"log", "string": "Error from sec.php: " + acctcreateResponse.errmsg}
                             native.postMessage(message)
@@ -149,10 +154,16 @@ function confirmPurchase() {
                 message = {"cmd":"log", "string": "outside onreadystatechange " + readyState + " " + xhr.status}
                 native.postMessage(message)
 
-                
-                //TODO: find out what to put in place of the term variable for a month term.
                 //TODO: Find out what to replace the "stripetoken" variable with.
                 //TODO: Might need to wrap the call back in an actual function and only sent the function name
+                
+                //var ePass = window.btoa(CryptoJS.AES.encrypt("Message", "Secret Passphrase"))
+                
+//                var ePass = CryptoJS.AES.encrypt(password.value, "Frugler:dealzfordayz!")
+//                
+//                message = {"cmd":"log", "string": "after CryptoKey password: " + ePass}
+//                native.postMessage(message)
+
                 
                 var data = JSON.stringify({"sentdata": [{
                                                         "username": email.value,

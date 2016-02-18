@@ -38,25 +38,25 @@
 	</array>
 
     <!-- Needed to load our site at: "ec2-54-152-204-90.compute-1.amazonaws.com/app/" -->
-<!--    <key>NSAppTransportSecurity</key>-->
-<!--    <dict>-->
-<!--        <key>NSAllowsArbitraryLoads</key>-->
-<!--        <true/>-->
-<!--    </dict>-->
-
     <key>NSAppTransportSecurity</key>
     <dict>
-        <key>NSExceptionDomains</key>
-        <dict>
-            <key>ec2-54-152-204-90.compute-1.amazonaws.com</key>
-            <dict>
-                <key>NSIncludesSubdomains</key>
-                <true/>
-                <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
-                <true/>
-            </dict>
-        </dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
     </dict>
+
+<!--    <key>NSAppTransportSecurity</key>-->
+<!--    <dict>-->
+<!--        <key>NSExceptionDomains</key>-->
+<!--        <dict>-->
+<!--            <key>ec2-54-152-204-90.compute-1.amazonaws.com</key>-->
+<!--            <dict>-->
+<!--                <key>NSIncludesSubdomains</key>-->
+<!--                <true/>-->
+<!--                <key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>-->
+<!--                <true/>-->
+<!--            </dict>-->
+<!--        </dict>-->
+<!--    </dict>-->
 
 </dict>
 </plist>
