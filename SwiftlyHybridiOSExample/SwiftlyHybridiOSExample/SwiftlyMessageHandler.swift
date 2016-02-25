@@ -45,7 +45,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         
         appWebView = WKWebView(frame: theController.view.frame, configuration: theConfiguration)
         theController.view.addSubview(appWebView!)
-        
+
         if let subed = isSubed.stringForKey("subed") {
             if (subed == "YES"){
                 
@@ -126,6 +126,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         }
         else if command == "restorePurchases" {
             restorePurchases()
+            response["restore"] = "restore purchase response"
         }
         else if command == "log" {
             let value = sentData["string"] as? String
@@ -134,8 +135,6 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
             let value = sentData["string"] as? String
             print("displayApp: \(value)")
             displayPurchase()
-        } else if command == "encryptPassword" {
-
         }
         let callbackString = sentData["callbackFunc"] as? String
         sendResponse(response, callback: callbackString)
@@ -168,7 +167,9 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
     
     func displayPurchase() {
         print("start displayPurchase")
+        //let url = NSURL (string: "https://www.google.com")
         let url = NSURL (string: "http://ec2-54-152-204-90.compute-1.amazonaws.com/app") //TODO: might need to add a request string to this with the user id
+        //let url = NSURL (string: "http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email=thom@test1.com&password=U2FsdGVkX1+6n0dJ5V5na7rk8e4aLZolVNAGneGJB48=")
         let requestObj = NSURLRequest(URL: url!)
         appWebView!.loadRequest(requestObj)
         print("loading webview")
@@ -259,6 +260,9 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                 break
             case .Purchasing:
                 print("Purchasing right now")
+                break
+            case .Restored:
+                print("Purchase restored")
                 break
             default:
 //                print("purchasing queue default")

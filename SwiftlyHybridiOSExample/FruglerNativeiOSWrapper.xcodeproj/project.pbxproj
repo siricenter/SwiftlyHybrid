@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		884DF56D1C7D28900049EE14 /* fruglericon80x80.png in Resources */ = {isa = PBXBuildFile; fileRef = 884DF56A1C7D28900049EE14 /* fruglericon80x80.png */; };
+		884DF56E1C7D28900049EE14 /* fruglericon120x120.png in Resources */ = {isa = PBXBuildFile; fileRef = 884DF56B1C7D28900049EE14 /* fruglericon120x120.png */; };
+		884DF5701C7D29E60049EE14 /* fruglericon58x58.png in Resources */ = {isa = PBXBuildFile; fileRef = 884DF56F1C7D29E60049EE14 /* fruglericon58x58.png */; };
 		8851085A1C6404EB005A8483 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 885108591C6404EB005A8483 /* .gitignore */; };
+		88B18E381C7D0B44009086DA /* fruglericon.png in Resources */ = {isa = PBXBuildFile; fileRef = 88B18E371C7D0B44009086DA /* fruglericon.png */; };
 		88F1DF1D1C20B5AC00087773 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88F1DF1C1C20B5AC00087773 /* StoreKit.framework */; };
 		9BC1DB1D1BDE7EBA00A20600 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC1DB1C1BDE7EBA00A20600 /* AppDelegate.swift */; };
 		9BC1DB1F1BDE7EBA00A20600 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC1DB1E1BDE7EBA00A20600 /* ViewController.swift */; };
@@ -22,7 +26,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		884DF56A1C7D28900049EE14 /* fruglericon80x80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fruglericon80x80.png; sourceTree = "<group>"; };
+		884DF56B1C7D28900049EE14 /* fruglericon120x120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fruglericon120x120.png; sourceTree = "<group>"; };
+		884DF56F1C7D29E60049EE14 /* fruglericon58x58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fruglericon58x58.png; sourceTree = "<group>"; };
 		885108591C6404EB005A8483 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		88B18E371C7D0B44009086DA /* fruglericon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fruglericon.png; sourceTree = "<group>"; };
 		88F1DF1C1C20B5AC00087773 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		9BC1DB191BDE7EBA00A20600 /* FruglerNativeiOSWrapper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FruglerNativeiOSWrapper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BC1DB1C1BDE7EBA00A20600 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -50,6 +58,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		88B18E391C7D0F3E009086DA /* images */ = {
+			isa = PBXGroup;
+			children = (
+				884DF56F1C7D29E60049EE14 /* fruglericon58x58.png */,
+				884DF56A1C7D28900049EE14 /* fruglericon80x80.png */,
+				884DF56B1C7D28900049EE14 /* fruglericon120x120.png */,
+				88B18E371C7D0B44009086DA /* fruglericon.png */,
+			);
+			name = images;
+			sourceTree = "<group>";
+		};
 		9BC1DB101BDE7EBA00A20600 = {
 			isa = PBXGroup;
 			children = (
@@ -70,6 +89,7 @@
 		9BC1DB1B1BDE7EBA00A20600 /* FruglerNativeiOSWrapper */ = {
 			isa = PBXGroup;
 			children = (
+				88B18E391C7D0F3E009086DA /* images */,
 				9BC1DB2E1BDE7EE300A20600 /* index.html */,
 				9BC1DB2F1BDE7EE300A20600 /* inter.js */,
 				9BC1DB301BDE7EE300A20600 /* main.css */,
@@ -154,9 +174,13 @@
 				8851085A1C6404EB005A8483 /* .gitignore in Resources */,
 				9BC1DB271BDE7EBA00A20600 /* LaunchScreen.storyboard in Resources */,
 				9BC1DB331BDE7EE300A20600 /* index.html in Resources */,
+				884DF56E1C7D28900049EE14 /* fruglericon120x120.png in Resources */,
 				9BC1DB351BDE7EE300A20600 /* main.css in Resources */,
+				88B18E381C7D0B44009086DA /* fruglericon.png in Resources */,
 				9BC1DB241BDE7EBA00A20600 /* Assets.xcassets in Resources */,
+				884DF56D1C7D28900049EE14 /* fruglericon80x80.png in Resources */,
 				9BC1DB361BDE7EE300A20600 /* main.js in Resources */,
+				884DF5701C7D29E60049EE14 /* fruglericon58x58.png in Resources */,
 				9BC1DB221BDE7EBA00A20600 /* Main.storyboard in Resources */,
 				9BC1DB341BDE7EE300A20600 /* inter.js in Resources */,
 			);
@@ -288,7 +312,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.myfrugler.frugler;
 				PRODUCT_NAME = FruglerNativeiOSWrapper;
-				PROVISIONING_PROFILE = "1616744c-2a98-48b2-b1d3-940e682cdcf3";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -302,7 +326,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.myfrugler.frugler;
 				PRODUCT_NAME = FruglerNativeiOSWrapper;
-				PROVISIONING_PROFILE = "1616744c-2a98-48b2-b1d3-940e682cdcf3";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
