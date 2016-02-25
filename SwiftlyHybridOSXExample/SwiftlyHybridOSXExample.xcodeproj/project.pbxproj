@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		88B18E341C7D09D5009086DA /* fruglericon.png in Resources */ = {isa = PBXBuildFile; fileRef = 88B18E331C7D09D5009086DA /* fruglericon.png */; };
 		9BC1DB451BDE818800A20600 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC1DB441BDE818800A20600 /* AppDelegate.swift */; };
 		9BC1DB471BDE818800A20600 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC1DB461BDE818800A20600 /* ViewController.swift */; };
 		9BC1DB491BDE818800A20600 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BC1DB481BDE818800A20600 /* Assets.xcassets */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		88B18E331C7D09D5009086DA /* fruglericon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fruglericon.png; sourceTree = "<group>"; };
 		9BC1DB411BDE818800A20600 /* SwiftlyHybridOSXExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftlyHybridOSXExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BC1DB441BDE818800A20600 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9BC1DB461BDE818800A20600 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 		9BC1DB431BDE818800A20600 /* SwiftlyHybridOSXExample */ = {
 			isa = PBXGroup;
 			children = (
+				88B18E331C7D09D5009086DA /* fruglericon.png */,
 				9BC1DB551BDE81C900A20600 /* index.html */,
 				9BC1DB561BDE81C900A20600 /* inter.js */,
 				9BC1DB571BDE81C900A20600 /* main.css */,
@@ -136,6 +139,7 @@
 			files = (
 				9BC1DB591BDE81C900A20600 /* index.html in Resources */,
 				9BC1DB5B1BDE81C900A20600 /* main.css in Resources */,
+				88B18E341C7D09D5009086DA /* fruglericon.png in Resources */,
 				9BC1DB5A1BDE81C900A20600 /* inter.js in Resources */,
 				9BC1DB5C1BDE81C900A20600 /* main.js in Resources */,
 				9BC1DB491BDE818800A20600 /* Assets.xcassets in Resources */,
@@ -293,6 +297,7 @@
 				9BC1DB521BDE818800A20600 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -63,7 +63,7 @@ function sendCount(){
 }
 
 window.onload = function() {
-    // get the sub information from Google Play
+        // get the sub information from Google Play
     var message = {"cmd":"onload", "callbackFunc":function(responseAsJSON){
         
 //        var response = JSON.parse(responseAsJSON)
@@ -82,6 +82,22 @@ var displayError = function() {
     for (var i = 0; i < 4; i++) {
         document.querySelectorAll(".req_fields")[i].style.display = "block";
     }
+}
+
+function restorePurchases() {
+    message = {"cmd":"log", "string":"JS restorePurchases()"}
+    native.postMessage(message)
+    
+    message = {"cmd":"restorePurchases", "callbackFunc":function(responseAsJSON){
+        var response = JSON.parse(responseAsJSON);
+        
+        message = {"cmd":"log", "string":"restorePurchases() callback: " + response['restore']}
+        native.postMessage(message)
+        
+        replacePageWithURL('http://ec2-54-152-204-90.compute-1.amazonaws.com/app')
+    }.toString()
+    }
+    native.postMessage(message)
 }
 
 function confirmPurchase() {
@@ -111,14 +127,22 @@ function confirmPurchase() {
             message = {"cmd":"requestMonthlyPurchase", "callbackFunc":function(responseAsJSON){//responseAsJSON is what we get back from swift
                 var purchaseResponse = JSON.parse(responseAsJSON)
                 
+                // TODO: figure out how to keep the callback from being fired prematurely
+                
                 // do ajax, on success setup user on PHP server
                 var xhr = new XMLHttpRequest()
                 var postUrl = servicesRoot + '/sec.php/'
                 
-                message = {"cmd":"log", "string": "email contents inside: " + email}
+                message = {"cmd":"log", "string": "password contents inside: " + password}
                 native.postMessage(message)
-                message = {"cmd":"log", "string": "email contents: " + purchaseResponse.value}
+                message = {"cmd":"log", "string": "password contents inside: " + password.value}
                 native.postMessage(message)
+                
+                var ePass = btoa(CryptoJS.AES.encrypt(password.value, "Frugler:dealzfordayz!"));
+                
+                message = {"cmd":"log", "string": "password contents inside: " + ePass}
+                native.postMessage(message)
+                
                 
                 xhr.onreadystatechange = function() {
                     message = {"cmd":"log", "string": "inside onreadystatechange " + xhr.readyState + " " + xhr.status}
@@ -133,12 +157,14 @@ function confirmPurchase() {
                             message = {"cmd":"log", "string": "response stuff: " + acctcreateResponse.user_id}
                             native.postMessage(message)
                             
-                            var ePass = CryptoJS.AES.encrypt(password.value, "Frugler:dealzfordayz!")
+                            message = {"cmd":"log", "string": "the URL: " + "http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email='" + email.value + "'&password=" + ePass + "'"	}
+                            native.postMessage(message)
+//                            var ePass = CryptoJS.AES.encrypt(password.value, "Frugler:dealzfordayz!")
 //                            message = {"cmd":"log", "string": "after CryptoKey password: " + ePass}
 //                            native.postMessage(message)
                             
                             // TODO: or get this to work
-                            replacePageWithURL("http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email=\"" + email + "\"&?password=\"" + ePass + "\"")
+                            replacePageWithURL("http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email='" + email.value + "'&password='" + ePass + "'")
                         } else {
                             message = {"cmd":"log", "string": "Error from sec.php: " + acctcreateResponse.errmsg}
                             native.postMessage(message)
@@ -156,14 +182,6 @@ function confirmPurchase() {
 
                 //TODO: Find out what to replace the "stripetoken" variable with.
                 //TODO: Might need to wrap the call back in an actual function and only sent the function name
-                
-                //var ePass = window.btoa(CryptoJS.AES.encrypt("Message", "Secret Passphrase"))
-                
-//                var ePass = CryptoJS.AES.encrypt(password.value, "Frugler:dealzfordayz!")
-//                
-//                message = {"cmd":"log", "string": "after CryptoKey password: " + ePass}
-//                native.postMessage(message)
-
                 
                 var data = JSON.stringify({"sentdata": [{
                                                         "username": email.value,
@@ -214,12 +232,16 @@ function confirmPurchase() {
 
 function replacePageWithURL(aURL){
     if(aURL){
+        message = {"cmd":"log", "string": "What is the url: " + aURL}
+        native.postMessage(message)
         if(navigator.userAgent.match(/Android/i)) {
             var loadMessage = {"cmd":"load_page","url":aURL}
             var messageAsString = JSON.stringify(loadMessage)
             native.postMessage(messageAsString)
         } else{
             window.location = aURL
+            message = {"cmd":"log", "string": "iOS shoule be redirecting to: " + aURL}
+            native.postMessage(message)
         }
     }
 }
