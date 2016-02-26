@@ -33,6 +33,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
     
     var list = [SKProduct]()
     var p = SKProduct()
+    var purchaseError = "false"
     
     let isSubed = NSUserDefaults.standardUserDefaults()
     
@@ -106,23 +107,25 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
             //your purchase code goes here. 
         }
         else if command == "onload" {
-            // Request IAPs Info
-            restorePurchases()  // TODO: figure out if this is the best way to do check if the app has already been purchased
-            print("isSubed before: ", isSubed.stringForKey("subed"))
-            if let subed = isSubed.stringForKey("subed") {
-                if (subed == "YES"){
-                    
-                    // Only access site if user has subscribed
-                    displayPurchase()
-
-                } else {
-                    // Stay on registration screen
-                }
-            } else {
-                // User has not subscribed
-                isSubed.setObject("NO", forKey: "subed")
-            }
-            print("isSubed after: ", isSubed.stringForKey("subed"))
+            response["purchaseError"] = purchaseError
+            
+//            // Request IAPs Info
+//            restorePurchases()  // TODO: figure out if this is the best way to do check if the app has already been purchased
+//            print("isSubed before: ", isSubed.stringForKey("subed"))
+//            if let subed = isSubed.stringForKey("subed") {
+//                if (subed == "YES"){
+//                    
+//                    // Only access site if user has subscribed
+//                    displayPurchase()
+//
+//                } else {
+//                    // Stay on registration screen
+//                }
+//            } else {
+//                // User has not subscribed
+//                isSubed.setObject("NO", forKey: "subed")
+//            }
+//            print("isSubed after: ", isSubed.stringForKey("subed"))
         }
         else if command == "restorePurchases" {
             restorePurchases()
@@ -245,6 +248,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         isSubed.setObject("YES", forKey: "subed")
                         print("isSubed: ", isSubed.stringForKey("subed"))
+                        purchaseError = "false"
                     default:
                         print("IAP not setup")
                         isSubed.setValue("NO", forKey: "subed")
@@ -254,7 +258,11 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
             case .Failed:
                 print("Purchase error")
                 isSubed.setValue("NO", forKey: "subed")
+                purchaseError = "true"
                 queue.finishTransaction(trans)
+                
+
+                
                 //TODO: need to display failure error
                 displayRegistration()
                 break

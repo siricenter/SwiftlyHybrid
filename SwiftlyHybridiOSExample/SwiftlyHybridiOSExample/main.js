@@ -63,19 +63,26 @@ function sendCount(){
 }
 
 window.onload = function() {
-        // get the sub information from Google Play
+    message = {"cmd":"log", "string":"JS onload()" }
+    native.postMessage(message)
+    
+    // check if there was a purchase error
     var message = {"cmd":"onload", "callbackFunc":function(responseAsJSON){
+        response = JSON.parse(responseAsJSON)
         
-//        var response = JSON.parse(responseAsJSON)
-//        var token = (response['token'] != null ? "isNotNull" : null)
-//        document.getElementById("test").innerText = response['token']
-//        if (token != null) {
-//            replacePageWithURL(theURL)
-//        }
-        }.toString()
+        message = {"cmd":"log", "string":"JS purchaseERROR:" + response['purchaseError']}
+        native.postMessage(message)
+        
+        if (response['purchaseError'] == "true") {
+            document.querySelector("#login_error").innerText = "* Purchase Error Try again"
+            // TODO: delete/unauth user from our DB
+            
+        } else {
+            // do nothing
+        }}.toString()
     }
-//    var messageAsString = JSON.stringify(message)
-//    native.postMessage(message)
+    var messageAsString = JSON.stringify(message)
+    native.postMessage(message)
 }
 
 var displayError = function() {
@@ -240,7 +247,7 @@ function replacePageWithURL(aURL){
             native.postMessage(messageAsString)
         } else{
             window.location = aURL
-            message = {"cmd":"log", "string": "iOS shoule be redirecting to: " + aURL}
+            message = {"cmd":"log", "string": "iOS should be redirecting to: " + aURL}
             native.postMessage(message)
         }
     }
