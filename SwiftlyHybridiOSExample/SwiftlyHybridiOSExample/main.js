@@ -75,8 +75,49 @@ window.onload = function() {
         
         if (response['purchaseError'] == "true") {
             document.querySelector("#login_error").innerText = "* Purchase Error Try again"
+            var email = response['user_email']
+            message = {"cmd":"log", "string":"JS purchaseERROR user_email:" + email}
+            native.postMessage(message)
             // TODO: delete/unauth user from our DB
             
+            var xhr = new XMLHttpRequest()
+            var postUrl = servicesRoot + '/sec.php/'
+            
+            xhr.onreadystatechange = function() {
+                message = {"cmd":"log", "string": "Delete inside onreadystatechange " + xhr.readyState + " " + xhr.status}
+                native.postMessage(message)
+                
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    message = {"cmd":"log", "string": "Delete works! onreadystatechange " + xhr.readyState + " " + xhr.status}
+                    native.postMessage(message)
+                    var acctcreateResponse = JSON.parse(xhr.responseText);
+                    
+                    if (!acctcreateResponse.errmsg) {
+                        message = {"cmd":"log", "string": "response stuff: " + acctcreateResponse.user_id}
+                        native.postMessage(message)
+
+                    } else {
+                        message = {"cmd":"log", "string": "Error from sec.php: " + acctcreateResponse.errmsg}
+                        native.postMessage(message)
+                    }
+                }
+                
+                
+            }
+            
+            xhr.open("POST", postUrl, true)
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+            
+            var data = JSON.stringify({"sentdata": [{
+                                                    "username": email,
+                                                    "email": email,
+                                                    "promocode":"",
+                                                    "term": "1",
+                                                    "stripetoken": "applegoogleToken",
+                                                    "req": "reg_deleteuser"
+                                                    }]})
+            
+            xhr.send(data)
         } else {
             // do nothing
         }}.toString()
@@ -131,87 +172,33 @@ function confirmPurchase() {
             purchaseBtn.style.display = "none"
             processingBtn.style.display = "block"
 
-            message = {"cmd":"requestMonthlyPurchase", "callbackFunc":function(responseAsJSON){//responseAsJSON is what we get back from swift
-                var purchaseResponse = JSON.parse(responseAsJSON)
-                
-                // TODO: figure out how to keep the callback from being fired prematurely
-                
-                // do ajax, on success setup user on PHP server
-                var xhr = new XMLHttpRequest()
-                var postUrl = servicesRoot + '/sec.php/'
-                
-                message = {"cmd":"log", "string": "password contents inside: " + password}
-                native.postMessage(message)
-                message = {"cmd":"log", "string": "password contents inside: " + password.value}
-                native.postMessage(message)
-                
-                var ePass = btoa(CryptoJS.AES.encrypt(password.value, "Frugler:dealzfordayz!"));
-                
-                message = {"cmd":"log", "string": "password contents inside: " + ePass}
-                native.postMessage(message)
-                
-                
-                xhr.onreadystatechange = function() {
-                    message = {"cmd":"log", "string": "inside onreadystatechange " + xhr.readyState + " " + xhr.status}
+            createAccount(email, password, function(email, ePass) {
+                message = {"cmd":"requestMonthlyPurchase", "email": email, "ePass": ePass, "callbackFunc":function(responseAsJSON){
+                    // responseAsJSON is what we get back from swift
+                    var response = JSON.parse(responseAsJSON)
+                    
+                    email = response['user_email']
+                    ePass = response['ePass']
+                    
+                    message = {"cmd":"log", "string":"email = " + response['user_email'] + " password = " + response['ePass']}
                     native.postMessage(message)
-                    
-                    if (xhr.readyState == 4 && xhr.status == 200) {
-                        message = {"cmd":"log", "string": "works! onreadystatechange " + xhr.readyState + " " + xhr.status}
-                        native.postMessage(message)
-                        var acctcreateResponse = JSON.parse(xhr.responseText);
-                        
-                        if (!acctcreateResponse.errmsg) {
-                            message = {"cmd":"log", "string": "response stuff: " + acctcreateResponse.user_id}
-                            native.postMessage(message)
-                            
-                            message = {"cmd":"log", "string": "the URL: " + "http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email='" + email.value + "'&password=" + ePass + "'"	}
-                            native.postMessage(message)
-//                            var ePass = CryptoJS.AES.encrypt(password.value, "Frugler:dealzfordayz!")
-//                            message = {"cmd":"log", "string": "after CryptoKey password: " + ePass}
-//                            native.postMessage(message)
-                            
-                            // TODO: or get this to work
-                            replacePageWithURL("http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email='" + email.value + "'&password='" + ePass + "'")
-                        } else {
-                            message = {"cmd":"log", "string": "Error from sec.php: " + acctcreateResponse.errmsg}
-                            native.postMessage(message)
-                        }
-                    }
-                    
-
-                }
-                xhr.open("POST", postUrl, true)
-                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
-                
-                var readyState = xhr.readyState
-                message = {"cmd":"log", "string": "outside onreadystatechange " + readyState + " " + xhr.status}
+                          
+                    message = {"cmd":"log", "string": "successCallback URL: " + "http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email='" + email + "'&password=" + ePass + "'"	}
+                    native.postMessage(message)
+                    // load our webview
+                    replacePageWithURL("http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email='" + email + "'&password='" + ePass + "'")
+                }.toString()}
                 native.postMessage(message)
-
-                //TODO: Find out what to replace the "stripetoken" variable with.
-                //TODO: Might need to wrap the call back in an actual function and only sent the function name
+            }, function() {
+                // handle the account creation fail
+                // Potential reasons: duplicate email
+                message = {"cmd":"log", "string":"User creation error"}
+                document.querySelector("#login_error").innerText = "* User creation error (email already in use)"
                 
-                var data = JSON.stringify({"sentdata": [{
-                                                        "username": email.value,
-                                                        "email": email.value,
-                                                        "password": password.value,
-                                                        "promocode":"",
-                                                        "term": "1",
-                                                        "stripetoken": "applegoogleToken",
-                                                        "req": "acctcreate"
-                                                        }]})
-                document.querySelector("#test").innerText = email.value + " " + password.value
-                
-                message = {"cmd":"log", "string": "email after data def: " + data}
-                native.postMessage(message)
-
-                
-                xhr.send(data)
-                
-                
-                
-                //then reset the url of the webview to your php server
-                //document.querySelector("#test").innerText = window.location
-            }.toString()}
+                purchaseBtn.style.display = "block"
+                processingBtn.style.display = "none"
+            })
+            
         } else {
             message = {"cmd":"log", "string":"Email or passwords do not match"}
             document.querySelector("#login_error").innerText = "* Email or passwords do not match"
@@ -228,11 +215,93 @@ function confirmPurchase() {
     native.postMessage(message)
 }
 
+function createAccount(email, password, successCallback, failureCallback) {
+
+    
+    // TODO: figure out how to keep the callback from being fired prematurely
+    
+    // do ajax, on success setup user on PHP server
+    var xhr = new XMLHttpRequest()
+    var postUrl = servicesRoot + '/sec.php/'
+    
+    message = {"cmd":"log", "string": "password contents inside: " + password}
+    native.postMessage(message)
+//    message = {"cmd":"log", "string": "password contents inside: " + password.value}
+//    native.postMessage(message)
+    
+    var ePass = btoa(CryptoJS.AES.encrypt(password, "Frugler:dealzfordayz!"));
+    
+    message = {"cmd":"log", "string": "password contents inside: " + ePass}
+    native.postMessage(message)
+    
+    
+    xhr.onreadystatechange = function() {
+        message = {"cmd":"log", "string": "inside onreadystatechange " + xhr.readyState + " " + xhr.status}
+        native.postMessage(message)
+        
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            message = {"cmd":"log", "string": "works! onreadystatechange " + xhr.readyState + " " + xhr.status}
+            native.postMessage(message)
+            var acctcreateResponse = JSON.parse(xhr.responseText);
+            
+            if (!acctcreateResponse.errmsg) {
+
+                message = {"cmd":"log", "string": "response stuff: " + acctcreateResponse.user_id}
+                native.postMessage(message)
+                
+                message = {"cmd":"log", "string": "the URL: " + "http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email='" + email + "'&password=" + ePass + "'"	}
+                native.postMessage(message)
+//                message = {"cmd":"log", "string": "the URL: " + "http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email='" + email.value + "'&password=" + ePass + "'"	}
+//                native.postMessage(message)
+                
+                // TODO: or get this to work
+                successCallback(email, ePass)
+                //replacePageWithURL("http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email='" + email + "'&password='" + ePass + "'")
+            } else {
+                message = {"cmd":"log", "string": "Error from sec.php: " + acctcreateResponse.errmsg}
+                native.postMessage(message)
+                failureCallback()
+            }
+        }
+    }
+    
+    xhr.open("POST", postUrl, true)
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+    
+    var readyState = xhr.readyState
+    message = {"cmd":"log", "string": "outside onreadystatechange " + readyState + " " + xhr.status}
+    native.postMessage(message)
+    
+    var data = JSON.stringify({"sentdata": [{
+                                            "username": email,
+                                            "email": email,
+                                            "password": password,
+                                            "promocode":"",
+                                            "term": "1",
+                                            "stripetoken": "applegoogleToken",
+                                            "req": "acctcreate"
+                                            }]})
+
+    
+    document.querySelector("#test").innerText = email.value + " " + password.value
+    
+    message = {"cmd":"log", "string": "email after data def: " + data}
+    native.postMessage(message)
+    
+    
+    xhr.send(data)
+    
+    
+    
+    //then reset the url of the webview to your php server
+    //document.querySelector("#test").innerText = window.location
+}
+
 // callback function that runs after creating the user in sec.php
 //function acctcreateCallback(data){
     // body of the callback after user has been created
     // TODO: check the data object returned from sec.php to see if everything went well
-    
+
     // if everything is good send the user on to the app webview
     // replacePageWithURL("http://ec2-54-152-204-90.compute-1.amazonaws.com/app/")
 //}

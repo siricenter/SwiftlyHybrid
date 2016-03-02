@@ -33,7 +33,12 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
     
     var list = [SKProduct]()
     var p = SKProduct()
+    
+    // This is messy, but these "global" variables are for the event of a faild purchase
     var purchaseError = "false"
+    var user_email = ""
+    var ePass = ""
+    var reg_error = false
     
     let isSubed = NSUserDefaults.standardUserDefaults()
     
@@ -103,11 +108,18 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         else if command == "requestMonthlyPurchase"{
             // Handle user info stuff here
             buyMonthlySub()
-            print("got purchase request \(sentData["userinfo"])")
+            
+            user_email = sentData["email"] as! String
+            response["user_email"] = user_email
+            ePass = sentData["ePass"] as! String
+            response["ePass"] = ePass
+            print("USER EMAIL: \(user_email)")
+            print("USER PASSW: \(ePass)")
             //your purchase code goes here. 
         }
         else if command == "onload" {
             response["purchaseError"] = purchaseError
+            response["user_email"] = user_email
             
 //            // Request IAPs Info
 //            restorePurchases()  // TODO: figure out if this is the best way to do check if the app has already been purchased
@@ -126,18 +138,24 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
 //                isSubed.setObject("NO", forKey: "subed")
 //            }
 //            print("isSubed after: ", isSubed.stringForKey("subed"))
-        }
-        else if command == "restorePurchases" {
+        } else if command == "restorePurchases" {
             restorePurchases()
             response["restore"] = "restore purchase response"
-        }
-        else if command == "log" {
+        } else if command == "log" {
             let value = sentData["string"] as? String
             print("JS: \(value)")
         } else if command == "displayApp" {
             let value = sentData["string"] as? String
             print("displayApp: \(value)")
             displayPurchase()
+        } else if command == "reg_error" {
+            // registration error
+            let value = sentData["bool"] as? String
+            if (value == "true") {
+                reg_error = true
+            } else {
+                reg_error = false
+            }
         }
         let callbackString = sentData["callbackFunc"] as? String
         sendResponse(response, callback: callbackString)
@@ -234,17 +252,16 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
             let trans = transaction
 //            print("trans.error: ", trans.error)
 //            print("trans.transactionState: ", trans.transactionState.rawValue)
-            
             switch trans.transactionState {
                 
             case .Purchased:
                 print("Purchasing")
                 print(p.productIdentifier)
-                
+            
                 let prodID = p.productIdentifier as String
                 switch prodID {
                     case "com.myfrugler.frugler.monthly":
-                        print("monthly payments")
+                        print("monthly payments: \(trans.transactionState.rawValue)")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         isSubed.setObject("YES", forKey: "subed")
                         print("isSubed: ", isSubed.stringForKey("subed"))
@@ -256,7 +273,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                 queue.finishTransaction(trans)
                 break
             case .Failed:
-                print("Purchase error")
+                print("Purchase error: \(trans.transactionState.rawValue)")
                 isSubed.setValue("NO", forKey: "subed")
                 purchaseError = "true"
                 queue.finishTransaction(trans)
@@ -273,7 +290,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                 print("Purchase restored")
                 break
             default:
-//                print("purchasing queue default")
+//              print("purchasing queue default")
                 break
                 
             }
