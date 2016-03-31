@@ -28,9 +28,9 @@ import WebKit
 
 import StoreKit
 
-class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestDelegate, SKPaymentTransactionObserver  {
+class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     var appWebView:WKWebView?
-    
+
     var list = [SKProduct]()
     var p = SKProduct()
     
@@ -48,9 +48,10 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         
         theConfiguration.userContentController.addScriptMessageHandler(self, name: "native")
         
-        
         appWebView = WKWebView(frame: theController.view.frame, configuration: theConfiguration)
         theController.view.addSubview(appWebView!)
+        // Remove the iOS scroll bounce as it messes with our webview scrolling
+        appWebView?.scrollView.bounces = false;
 
         if let subed = isSubed.stringForKey("subed") {
             if (subed == "YES"){
@@ -190,6 +191,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         print("start displayPurchase")
         //let url = NSURL (string: "https://www.google.com")
         let url = NSURL (string: "http://ec2-54-152-204-90.compute-1.amazonaws.com/app") //TODO: might need to add a request string to this with the user id
+        
         //let url = NSURL (string: "http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email=thom@test1.com&password=U2FsdGVkX1+6n0dJ5V5na7rk8e4aLZolVNAGneGJB48=")
         let requestObj = NSURLRequest(URL: url!)
         appWebView!.loadRequest(requestObj)
@@ -288,6 +290,8 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                 break
             case .Restored:
                 print("Purchase restored")
+                isSubed.setObject("YES", forKey: "subed")
+                print("isSubed: ", isSubed.stringForKey("subed"))
                 break
             default:
 //              print("purchasing queue default")

@@ -30,7 +30,7 @@ var theURL = 'http://ec2-54-152-204-90.compute-1.amazonaws.com'
 var theURL = 'https://www.google.com/'
 
 // set the root domain location for development, stage, or production
-var sysRoot = 'staging'
+var sysRoot = 'local'
 
 var servicesRoot = ''
 if (sysRoot == 'local') {
@@ -191,7 +191,7 @@ function confirmPurchase() {
                 native.postMessage(message)
             }, function() {
                 // handle the account creation fail
-                // Potential reasons: duplicate email
+            	    // Potential reasons: duplicate email
                 message = {"cmd":"log", "string":"User creation error"}
                 document.querySelector("#login_error").innerText = "* User creation error (email already in use)"
                 

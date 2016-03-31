@@ -24,11 +24,13 @@ SOFTWARE.
 
 import UIKit
 
-class ViewController: UIViewController{
+class ViewController: UIViewController  {
     var theHandler:SwiftlyMessageHandler?
+    @IBOutlet var txtTest : UITextField? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         theHandler = SwiftlyMessageHandler(theController: self)
     }
     
