@@ -30,7 +30,7 @@ var theURL = 'http://ec2-54-152-204-90.compute-1.amazonaws.com'
 var theURL = 'https://www.google.com/'
 
 // set the root domain location for development, stage, or production
-var sysRoot = 'local'
+var sysRoot = 'staging'
 
 var servicesRoot = ''
 if (sysRoot == 'local') {
