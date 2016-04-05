@@ -34,7 +34,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
     var list = [SKProduct]()
     var p = SKProduct()
     
-    // This is messy, but these "global" variables are for the event of a faild purchase
+    // This is messy, but these "global"  variables are for the event of a faild purchase
     var purchaseError = "false"
     var user_email = ""
     var ePass = ""
