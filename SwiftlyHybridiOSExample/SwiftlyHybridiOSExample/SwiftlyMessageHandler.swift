@@ -190,7 +190,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
     func displayPurchase() {
         print("start displayPurchase")
         //let url = NSURL (string: "https://www.google.com")
-        let url = NSURL (string: "http://ec2-54-152-204-90.compute-1.amazonaws.com/app") //TODO: might need to add a request string to this with the user id
+ 	       let url = NSURL (string: "http://ec2-54-152-204-90.compute-1.amazonaws.com/app") //TODO: might need to add a request string to this with the user id
         
         //let url = NSURL (string: "http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email=thom@test1.com&password=U2FsdGVkX1+6n0dJ5V5na7rk8e4aLZolVNAGneGJB48=")
         let requestObj = NSURLRequest(URL: url!)
