@@ -52,7 +52,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         theController.view.addSubview(appWebView!)
         // Remove the iOS scroll bounce as it messes with our webview scrolling
         appWebView?.scrollView.bounces = false;
-
+        
         if let subed = isSubed.stringForKey("subed") {
             if (subed == "YES"){
                 
@@ -103,7 +103,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
             guard var count = sentData["count"] as? Int else{
                 return
             }
-            count++
+            count += 1
             response["count"] = count
         }
         else if command == "requestMonthlyPurchase"{
@@ -149,6 +149,14 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
             let value = sentData["string"] as? String
             print("displayApp: \(value)")
             displayPurchase()
+        } else if command == "show_map_phone" {
+            if let value = sentData["url"] as? String {
+                if let theURL = NSURL(string: value) {
+                    if UIApplication.sharedApplication().canOpenURL(theURL) {
+                        UIApplication.sharedApplication().openURL(theURL)
+                    }
+                }
+            }
         } else if command == "reg_error" {
             // registration error
             let value = sentData["bool"] as? String

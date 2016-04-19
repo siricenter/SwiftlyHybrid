@@ -321,3 +321,11 @@ function replacePageWithURL(aURL){
         }
     }
 }
+
+function launchMapOrPhone(aURL) {
+    event.preventDefault()
+    alert("hit map/phone launch: ", aURL)
+    var message = {"cmd": "show_map_phone", "url": aURL}
+    native.postMessage(message)
+    return false
+}
