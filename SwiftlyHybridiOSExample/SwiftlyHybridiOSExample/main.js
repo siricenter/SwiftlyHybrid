@@ -28,9 +28,10 @@ var clicks = 0
 
 var theURL = 'http://ec2-54-152-204-90.compute-1.amazonaws.com'
 var theURL = 'https://www.google.com/'
+var currentURL = 'https://www.f5admin.com/app'
 
 // set the root domain location for development, stage, or production
-var sysRoot = 'staging'
+var sysRoot = 'prod'
 
 var servicesRoot = ''
 if (sysRoot == 'local') {
@@ -142,7 +143,8 @@ function restorePurchases() {
         message = {"cmd":"log", "string":"restorePurchases() callback: " + response['restore']}
         native.postMessage(message)
         
-        replacePageWithURL('http://ec2-54-152-204-90.compute-1.amazonaws.com/app')
+//        replacePageWithURL('http://ec2-54-152-204-90.compute-1.amazonaws.com/app')
+        replacePageWithURL(currentURL)
     }.toString()
     }
     native.postMessage(message)
@@ -183,10 +185,12 @@ function confirmPurchase() {
                     message = {"cmd":"log", "string":"email = " + response['user_email'] + " password = " + response['ePass']}
                     native.postMessage(message)
                           
-                    message = {"cmd":"log", "string": "successCallback URL: " + "http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email='" + email + "'&password=" + ePass + "'"	}
+//                    message = {"cmd":"log", "string": "successCallback URL: " + "http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email='" + email + "'&password=" + ePass + "'"	}
+                    message = {"cmd":"log", "string": "successCallback URL: " + currentURL + "?email='" + email + "'&password=" + ePass + "'"	}
                     native.postMessage(message)
                     // load our webview
-                    replacePageWithURL("http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email='" + email + "'&password='" + ePass + "'")
+//                    replacePageWithURL("http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email='" + email + "'&password='" + ePass + "'")
+                    replacePageWithURL(currentURL + "?email='" + email + "'&password='" + ePass + "'")
                 }.toString()}
                 native.postMessage(message)
             }, function() {
@@ -249,7 +253,8 @@ function createAccount(email, password, successCallback, failureCallback) {
                 message = {"cmd":"log", "string": "response stuff: " + acctcreateResponse.user_id}
                 native.postMessage(message)
                 
-                message = {"cmd":"log", "string": "the URL: " + "http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email='" + email + "'&password=" + ePass + "'"	}
+//                message = {"cmd":"log", "string": "the URL: " + "http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email='" + email + "'&password=" + ePass + "'"	}
+                message = {"cmd":"log", "string": "the URL: " + currentURL + "?email='" + email + "'&password=" + ePass + "'"	}
                 native.postMessage(message)
 //                message = {"cmd":"log", "string": "the URL: " + "http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email='" + email.value + "'&password=" + ePass + "'"	}
 //                native.postMessage(message)
