@@ -39,11 +39,17 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
     var user_email = ""
     var ePass = ""
     var reg_error = false
+    let sysRoot:String = "staging"
+    
+    let the_url:String = "http://ec2-54-152-204-90.compute-1.amazonaws.com/app"
+//    let the_url:String = "https://www.f5admin.com/app"
+    
     
     let isSubed = NSUserDefaults.standardUserDefaults()
     
     init(theController:ViewController){
         super.init()
+    
         let theConfiguration = WKWebViewConfiguration()
         
         theConfiguration.userContentController.addScriptMessageHandler(self, name: "native")
@@ -52,6 +58,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         theController.view.addSubview(appWebView!)
         // Remove the iOS scroll bounce as it messes with our webview scrolling
         appWebView?.scrollView.bounces = false;
+        
         
         if let subed = isSubed.stringForKey("subed") {
             if (subed == "YES"){
@@ -121,24 +128,6 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         else if command == "onload" {
             response["purchaseError"] = purchaseError
             response["user_email"] = user_email
-            
-//            // Request IAPs Info
-//            restorePurchases()  // TODO: figure out if this is the best way to do check if the app has already been purchased
-//            print("isSubed before: ", isSubed.stringForKey("subed"))
-//            if let subed = isSubed.stringForKey("subed") {
-//                if (subed == "YES"){
-//                    
-//                    // Only access site if user has subscribed
-//                    displayPurchase()
-//
-//                } else {
-//                    // Stay on registration screen
-//                }
-//            } else {
-//                // User has not subscribed
-//                isSubed.setObject("NO", forKey: "subed")
-//            }
-//            print("isSubed after: ", isSubed.stringForKey("subed"))
         } else if command == "restorePurchases" {
             restorePurchases()
             response["restore"] = "restore purchase response"
@@ -198,8 +187,8 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
     func displayPurchase() {
         print("start displayPurchase")
         //let url = NSURL (string: "https://www.google.com")
-// 	       let url = NSURL (string: "http://ec2-54-152-204-90.compute-1.amazonaws.com/app") //TODO: might need to add a request string to this with the user id
-        let url = NSURL (string: "https://www.f5admin.com/app")
+// 	    let url = NSURL (string: "http://ec2-54-152-204-90.compute-1.amazonaws.com/app") //TODO: might need to add a request string to this with the user id
+        let url = NSURL (string: the_url)
         let requestObj = NSURLRequest(URL: url!)
         appWebView!.loadRequest(requestObj)
         print("loading webview")

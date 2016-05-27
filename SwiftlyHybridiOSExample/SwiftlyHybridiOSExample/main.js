@@ -28,10 +28,11 @@ var clicks = 0
 
 var theURL = 'http://ec2-54-152-204-90.compute-1.amazonaws.com'
 var theURL = 'https://www.google.com/'
-var currentURL = 'https://www.f5admin.com/app'
+//var currentURL = 'https://www.f5admin.com/app'
+var currentURL = 'http://ec2-54-152-204-90.compute-1.amazonaws.com/app'
 
 // set the root domain location for development, stage, or production
-var sysRoot = 'prod'
+var sysRoot = 'staging'
 
 var servicesRoot = ''
 if (sysRoot == 'local') {
@@ -221,7 +222,6 @@ function confirmPurchase() {
 
 function createAccount(email, password, successCallback, failureCallback) {
 
-    
     // TODO: figure out how to keep the callback from being fired prematurely
     
     // do ajax, on success setup user on PHP server
@@ -232,10 +232,12 @@ function createAccount(email, password, successCallback, failureCallback) {
     native.postMessage(message)
 //    message = {"cmd":"log", "string": "password contents inside: " + password.value}
 //    native.postMessage(message)
+    var CryptoJS = new Crypt();
     
     var ePass = btoa(CryptoJS.AES.encrypt(password, "Frugler:dealzfordayz!"));
     
     message = {"cmd":"log", "string": "password contents inside: " + ePass}
+//    message = {"cmd":"log", "string": "password contents inside: " + password}
     native.postMessage(message)
     
     
