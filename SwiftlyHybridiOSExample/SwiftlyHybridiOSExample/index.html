@@ -60,7 +60,11 @@
             <div class="required"><span class="req_fields">* </span><input type="password" class="" id="password" placeholder="Password"></div>
             <div class="required"><span class="req_fields">* </span><input type="password" class="" id="confirmPwd" placeholder="Confirm password"></div>
             <div><span class="req_fields">* - required field</span></div>
-            <div id="pricing">Monthly $4.99</div>
+            <div id="pricing">
+                <input type="radio" name="plan" value="1" id="1month" checked /><label for="1month">1 Month $4.99</label><br />
+                <input type="radio" name="plan" value="3" id="3month" /><label for="3month">3 Months $12.99</label> <br>
+                <input type="radio" name="plan" value="12" id="12month" /><label for="12month">12 Months $44.99</label>
+            </div>
             <div id="purchase-btn" onclick="return confirmPurchase()">Confirm Purchase</div>
             <div id="processing-btn">Processing...</div>
             <div id="small-btn-wrapper">

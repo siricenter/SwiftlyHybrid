@@ -161,9 +161,10 @@ function confirmPurchase() {
     var email = document.querySelector("#email").value
     var confEmail = document.querySelector("#confEmail").value
     var password = document.querySelector("#password").value
-    var confirmPwd = document.querySelector("#confirmPwd").value
+    var confirmPwd = document.querySelector("#confirmPwd").value    
+    var plan = document.querySelector('input[name="plan"]:checked').value
     
-    message = {"cmd":"log", "string": "email contents outside: " + email}
+    message = {"cmd":"log", "string": "email contents outside: " + email + " plan: " + plan}
     native.postMessage(message)
     // TODO: error handling for incorrect user input
     //do a local pw confirm here
@@ -176,7 +177,7 @@ function confirmPurchase() {
             processingBtn.style.display = "block"
 
             createAccount(email, password, function(email, ePass) {
-                message = {"cmd":"requestMonthlyPurchase", "email": email, "ePass": ePass, "callbackFunc":function(responseAsJSON){
+                message = {"cmd":"requestMonthlyPurchase", "email": email, "ePass": ePass, "plan": plan, "callbackFunc":function(responseAsJSON){
                     // responseAsJSON is what we get back from swift
                     var response = JSON.parse(responseAsJSON)
                     

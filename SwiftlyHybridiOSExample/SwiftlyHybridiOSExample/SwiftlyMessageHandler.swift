@@ -59,7 +59,6 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         // Remove the iOS scroll bounce as it messes with our webview scrolling
         appWebView?.scrollView.bounces = false;
         
-        
         if let subed = isSubed.stringForKey("subed") {
             if (subed == "YES"){
                 
@@ -88,10 +87,21 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         // link to apple in app billing
         if(SKPaymentQueue.canMakePayments()) {
             print("IAP is enabled, loading")
-            let productID = Set(arrayLiteral: "com.myfrugler.frugler.monthly")
-            let request = SKProductsRequest(productIdentifiers: productID)
-            request.delegate = self
-            request.start()
+            let productID_1 = Set(arrayLiteral: "com.myfrugler.frugler.submonthly")
+            let productID_3 = Set(arrayLiteral: "com.myfrugler.frugler.sub3monthly")
+            let productID_12 = Set(arrayLiteral: "com.myfrugler.frugler.sub12monthly")
+            
+            let request_1 = SKProductsRequest(productIdentifiers: productID_1)
+            let request_3 = SKProductsRequest(productIdentifiers: productID_3)
+            let request_12 = SKProductsRequest(productIdentifiers: productID_12)
+
+            request_1.delegate = self
+            request_3.delegate = self
+            request_12.delegate = self
+            
+            request_1.start()
+            request_3.start()
+            request_12.start()
             
         } else {
             print("please enable IAPS")
@@ -115,7 +125,16 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         }
         else if command == "requestMonthlyPurchase"{
             // Handle user info stuff here
-            buyMonthlySub()
+            
+            let plan = sentData["plan"] as! String
+            
+            if (plan == "1") {
+                buyMonthlySub()
+            } else if (plan == "3") {
+                buy3MonthSub()
+            } else if (plan == "12") {
+                buy12MonthSub()
+            }
             
             user_email = sentData["email"] as! String
             response["user_email"] = user_email
@@ -214,7 +233,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         print("start buyMonthlySub")
         for product in list {
             let prodID = product.productIdentifier
-            if (prodID == "com.myfrugler.frugler.monthly") {
+            if (prodID == "com.myfrugler.frugler.submonthly") {
                 p = product
                 print("Product = " + p.productIdentifier)
                 break;
@@ -226,6 +245,41 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         SKPaymentQueue.defaultQueue().addTransactionObserver(self)
         SKPaymentQueue.defaultQueue().addPayment(pay as SKPayment)
     }
+    
+    func buy3MonthSub() {
+        print("start buy3MonthlySub")
+        for product in list {
+            let prodID = product.productIdentifier
+            if (prodID == "com.myfrugler.frugler.sub3monthly") {
+                p = product
+                print("Product = " + p.productIdentifier)
+                break;
+            }
+        }
+        
+        print("Buy " + p.productIdentifier)
+        let pay = SKPayment(product: p)
+        SKPaymentQueue.defaultQueue().addTransactionObserver(self)
+        SKPaymentQueue.defaultQueue().addPayment(pay as SKPayment)
+    }
+    
+    func buy12MonthSub() {
+        print("start buy12MonthlySub")
+        for product in list {
+            let prodID = product.productIdentifier
+            if (prodID == "com.myfrugler.frugler.sub12monthly") {
+                p = product
+                print("Product = " + p.productIdentifier)
+                break;
+            }
+        }
+        
+        print("Buy " + p.productIdentifier)
+        let pay = SKPayment(product: p)
+        SKPaymentQueue.defaultQueue().addTransactionObserver(self)
+        SKPaymentQueue.defaultQueue().addPayment(pay as SKPayment)
+    }
+    
     
     
     func productsRequest(request: SKProductsRequest, didReceiveResponse response: SKProductsResponse) {
@@ -258,12 +312,27 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
             
                 let prodID = p.productIdentifier as String
                 switch prodID {
-                    case "com.myfrugler.frugler.monthly":
+                    case "com.myfrugler.frugler.submonthly":
                         print("monthly payments: \(trans.transactionState.rawValue)")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         isSubed.setObject("YES", forKey: "subed")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         purchaseError = "false"
+                        break
+                    case "com.myfrugler.frugler.sub3monthly":
+                        print("monthly payments: \(trans.transactionState.rawValue)")
+                        print("isSubed: ", isSubed.stringForKey("subed"))
+                        isSubed.setObject("YES", forKey: "subed")
+                        print("isSubed: ", isSubed.stringForKey("subed"))
+                        purchaseError = "false"
+                        break
+                    case "com.myfrugler.frugler.sub12monthly":
+                        print("monthly payments: \(trans.transactionState.rawValue)")
+                        print("isSubed: ", isSubed.stringForKey("subed"))
+                        isSubed.setObject("YES", forKey: "subed")
+                        print("isSubed: ", isSubed.stringForKey("subed"))
+                        purchaseError = "false"
+                        break
                     default:
                         print("IAP not setup")
                         isSubed.setValue("NO", forKey: "subed")
@@ -305,11 +374,17 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
             let prodID = t.payment.productIdentifier as String
             print(prodID)
             switch prodID {
-            case "com.myfrugler.frugler.monthly":
-                print("monthly sub")
-                return
-            default:
-                print("IAP not setup")
+                case "com.myfrugler.frugler.submonthly":
+                    print("monthly sub")
+                    return
+                case "com.myfrugler.frugler.sub3monthly":
+                    print("3 monthly sub")
+                    return
+                case "com.myfrugler.frugler.sub12monthly":
+                    print("12 monthly sub")
+                    return
+                default:
+                    print("IAP not setup")
             }
         }
     }
