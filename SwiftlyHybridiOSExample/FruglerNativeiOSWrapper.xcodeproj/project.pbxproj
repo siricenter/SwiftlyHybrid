@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		880347061CFE315400679A97 /* renew.html in Resources */ = {isa = PBXBuildFile; fileRef = 880347051CFE315400679A97 /* renew.html */; };
 		884DF56D1C7D28900049EE14 /* fruglericon80x80.png in Resources */ = {isa = PBXBuildFile; fileRef = 884DF56A1C7D28900049EE14 /* fruglericon80x80.png */; };
 		884DF56E1C7D28900049EE14 /* fruglericon120x120.png in Resources */ = {isa = PBXBuildFile; fileRef = 884DF56B1C7D28900049EE14 /* fruglericon120x120.png */; };
 		884DF5701C7D29E60049EE14 /* fruglericon58x58.png in Resources */ = {isa = PBXBuildFile; fileRef = 884DF56F1C7D29E60049EE14 /* fruglericon58x58.png */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		880347051CFE315400679A97 /* renew.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = renew.html; sourceTree = "<group>"; };
 		884DF56A1C7D28900049EE14 /* fruglericon80x80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fruglericon80x80.png; sourceTree = "<group>"; };
 		884DF56B1C7D28900049EE14 /* fruglericon120x120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fruglericon120x120.png; sourceTree = "<group>"; };
 		884DF56F1C7D29E60049EE14 /* fruglericon58x58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fruglericon58x58.png; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 			children = (
 				88B18E391C7D0F3E009086DA /* images */,
 				9BC1DB2E1BDE7EE300A20600 /* index.html */,
+				880347051CFE315400679A97 /* renew.html */,
 				9BC1DB2F1BDE7EE300A20600 /* inter.js */,
 				9BC1DB301BDE7EE300A20600 /* main.css */,
 				9BC1DB311BDE7EE300A20600 /* main.js */,
@@ -180,6 +183,7 @@
 				9BC1DB241BDE7EBA00A20600 /* Assets.xcassets in Resources */,
 				884DF56D1C7D28900049EE14 /* fruglericon80x80.png in Resources */,
 				9BC1DB361BDE7EE300A20600 /* main.js in Resources */,
+				880347061CFE315400679A97 /* renew.html in Resources */,
 				884DF5701C7D29E60049EE14 /* fruglericon58x58.png in Resources */,
 				9BC1DB221BDE7EBA00A20600 /* Main.storyboard in Resources */,
 				9BC1DB341BDE7EE300A20600 /* inter.js in Resources */,

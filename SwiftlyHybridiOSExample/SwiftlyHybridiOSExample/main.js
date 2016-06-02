@@ -150,7 +150,24 @@ function restorePurchases() {
     }
     native.postMessage(message)
 }
-
+function setTerm(el) {
+    var pricingOptions = el.parentElement.children;
+    for (var i=0; i<pricingOptions.length; i++) {
+        pricingOptions[i].style.backgroundColor = 'white';
+        pricingOptions[i].style.color = '#2660AD';
+    }
+    el.style.backgroundColor = '#2660AD';
+    el.style.color = 'white';
+    var term = el.dataset.month;
+    var renewBtn = document.getElementById('renew-btn');
+    var purchaseBtn = document.getElementById('purchase-btn');
+    if (renewBtn) {renewBtn.dataset.term = term;}
+    if (purchaseBtn) {purchaseBtn.dataset.term = term;}
+    message = {"cmd":"log", "string":"Check the term: " + term}
+    native.postMessage(message)
+}
+function renewPurchase(el) {
+}
 function confirmPurchase() {
     message = {"cmd":"log", "string":"does this confirm button work?"}
     native.postMessage(message)
@@ -161,8 +178,9 @@ function confirmPurchase() {
     var email = document.querySelector("#email").value
     var confEmail = document.querySelector("#confEmail").value
     var password = document.querySelector("#password").value
-    var confirmPwd = document.querySelector("#confirmPwd").value    
-    var plan = document.querySelector('input[name="plan"]:checked').value
+    var confirmPwd = document.querySelector("#confirmPwd").value
+    //var plan = document.querySelector('input[name="plan"]:checked').value
+    var plan = purchaseBtn.dataset.term;
     
     message = {"cmd":"log", "string": "email contents outside: " + email + " plan: " + plan}
     native.postMessage(message)

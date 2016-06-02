@@ -28,6 +28,17 @@ import WebKit
 
 import StoreKit
 
+// for the NSDate objects
+public func ==(lhs: NSDate, rhs: NSDate) -> Bool {
+    return lhs === rhs || lhs.compare(rhs) == .OrderedSame
+}
+
+public func <(lhs: NSDate, rhs: NSDate) -> Bool {
+    return lhs.compare(rhs) == .OrderedAscending
+}
+
+extension NSDate: Comparable { }
+
 class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     var appWebView:WKWebView?
 
@@ -46,7 +57,8 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
     
     
     let isSubed = NSUserDefaults.standardUserDefaults()
-    
+    let endSub_date = NSUserDefaults.standardUserDefaults()
+
     init(theController:ViewController){
         super.init()
     
@@ -59,6 +71,40 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         // Remove the iOS scroll bounce as it messes with our webview scrolling
         appWebView?.scrollView.bounces = false;
         
+        let current_date = NSDate()
+        print(current_date)
+        var end_date:NSDate = NSDate(timeIntervalSinceReferenceDate: 0)// = endSub_date.objectForKey("date") as! NSDate
+
+//        let dateFormatter:NSDateFormatter = NSDateFormatter()
+//        dateFormatter.dateFormat = "yyyy-MM-dd"
+//        let current_DateInFormat:String = dateFormatter.stringFromDate(current_date)
+//        var endSub_DateInFormat:String = "nil"
+        
+        // get the end sub date from memory
+        if let end = endSub_date.objectForKey("date") {
+            end_date = end as! NSDate
+        } else {
+            endSub_date.setObject(NSDate(timeIntervalSinceReferenceDate: 0), forKey: "date")
+        }
+        
+        print(current_date < end_date)
+        print(end_date < current_date)
+        print(current_date == end_date)
+        
+        print(current_date)
+        print(end_date)
+        
+        if let end:NSDate = endSub_date.objectForKey("date") as? NSDate {
+            if (end == NSDate(timeIntervalSinceReferenceDate: 0)) {
+                // User has never subscribed or there was a purchase error
+                isSubed.setObject("NO", forKey: "subed")
+            } else if (current_date < end) {
+                isSubed.setObject("YES", forKey: "subed")
+            } else if (end < current_date) {
+                isSubed.setObject("NO_NEEDS_RENEWING", forKey: "subed")
+            }
+        }
+        
         if let subed = isSubed.stringForKey("subed") {
             if (subed == "YES"){
                 
@@ -66,10 +112,14 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                 // Only access site if user has subscribed
                 displayPurchase()
                 
-            } else {
+            } else if (subed == "NO_NEEDS_RENEWING") {
                 linkInAppBilling()
                 
                 // Stay on registration screen
+                displayRenewing()
+            } else if (subed == "NO") {
+                linkInAppBilling()
+                
                 displayRegistration()
             }
         } else {
@@ -222,6 +272,15 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         print("registration displayed")
     }
     
+    func displayRenewing() {
+        let renewHTMLPath = NSBundle.mainBundle().pathForResource("renew", ofType: "html")
+        let url = NSURL(fileURLWithPath: renewHTMLPath!)
+        
+        let request = NSURLRequest(URL: url)
+        appWebView!.loadRequest(request)
+        print("registration displayed")
+    }
+    
     func restorePurchases() {
         print("start restorePurchases")
         SKPaymentQueue.defaultQueue().addTransactionObserver(self)
@@ -316,6 +375,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                         print("monthly payments: \(trans.transactionState.rawValue)")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         isSubed.setObject("YES", forKey: "subed")
+                        endSub_date.setObject(NSDate().dateByAddingTimeInterval(2678400), forKey: "date")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         purchaseError = "false"
                         break
@@ -323,6 +383,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                         print("monthly payments: \(trans.transactionState.rawValue)")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         isSubed.setObject("YES", forKey: "subed")
+                        endSub_date.setObject(NSDate().dateByAddingTimeInterval(8035200), forKey: "date")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         purchaseError = "false"
                         break
@@ -330,6 +391,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                         print("monthly payments: \(trans.transactionState.rawValue)")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         isSubed.setObject("YES", forKey: "subed")
+                        endSub_date.setObject(NSDate().dateByAddingTimeInterval(32140800), forKey: "date")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         purchaseError = "false"
                         break
@@ -342,6 +404,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
             case .Failed:
                 print("Purchase error: \(trans.transactionState.rawValue)")
                 isSubed.setValue("NO", forKey: "subed")
+                endSub_date.setObject(NSDate(timeIntervalSinceReferenceDate: 0), forKey: "date")
                 purchaseError = "true"
                 queue.finishTransaction(trans)
                 

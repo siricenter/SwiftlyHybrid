@@ -147,9 +147,20 @@ input:focus {
     color: #143756;
     font-size: 1.2em;
 }
-#purchase-btn, #processing-btn {
+#pricing p {
+    background-color: white;
+    color: #2660AD;
+    padding: 15px;
+    border-top: 1px solid #2660AD;
+    border-right: 1px solid #2660AD;
+    border-left: 1px solid #2660AD;
+}
+#pricing p:last-child {
+    border-bottom: 1px solid #2660AD;
+}
+#purchase-btn, #processing-btn, #renew-btn {
     color: black;
-    box-shadow: 5px 5px 5px rgba(130,125,130,0.3);;
+    box-shadow: 5px 5px 5px rgba(130,125,130,0.3);
     -webkit-box-shadow: 5px 5px 5px 0px rgba(130,125,130,0.3);
     -moz-box-shadow: 5px 5px 5px 0px rgba(130,125,130,0.3);
     background-color: #FFF;
