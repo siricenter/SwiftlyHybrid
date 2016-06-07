@@ -150,6 +150,11 @@ function restorePurchases() {
     }
     native.postMessage(message)
 }
+function login() {
+    message = {"cmd":"login", "string":""}
+    native.postMessage(message)
+}
+
 function setTerm(el) {
     var pricingOptions = el.parentElement.children;
     for (var i=0; i<pricingOptions.length; i++) {
@@ -166,8 +171,29 @@ function setTerm(el) {
     message = {"cmd":"log", "string":"Check the term: " + term}
     native.postMessage(message)
 }
-function renewPurchase(el) {
+//function renewPurchase(el) {
+//}
+
+function renewPurchase() {
+    var renewBtn = document.querySelector("#renew-btn");
+    var plan = renewBtn.dataset.term;
+    
+    message = {"cmd":"log", "string":"Does the renew button work? Plan " + plan}
+    native.postMessage(message)
+
+    message = {"cmd":"requestMonthlyPurchase", "plan": plan, "renew":"true", "callbackFunc":function(responseAsJSON){
+        message = {"cmd":"log", "string": "successCallback URL: " + currentURL}
+        native.postMessage(message)
+        // load our webview
+        //                    replacePageWithURL("http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email='" + email + "'&password='" + ePass + "'")
+        replacePageWithURL(currentURL)
+        
+    }.toString()}
+    native.postMessage(message)
+
+    
 }
+
 function confirmPurchase() {
     message = {"cmd":"log", "string":"does this confirm button work?"}
     native.postMessage(message)

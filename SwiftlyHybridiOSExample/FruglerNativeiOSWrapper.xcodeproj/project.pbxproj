@@ -28,6 +28,7 @@
 
 /* Begin PBXFileReference section */
 		880347051CFE315400679A97 /* renew.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = renew.html; sourceTree = "<group>"; };
+		880347071D00C1C300679A97 /* FruglerNativeiOSWrapper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = FruglerNativeiOSWrapper.entitlements; sourceTree = SOURCE_ROOT; };
 		884DF56A1C7D28900049EE14 /* fruglericon80x80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fruglericon80x80.png; sourceTree = "<group>"; };
 		884DF56B1C7D28900049EE14 /* fruglericon120x120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fruglericon120x120.png; sourceTree = "<group>"; };
 		884DF56F1C7D29E60049EE14 /* fruglericon58x58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fruglericon58x58.png; sourceTree = "<group>"; };
@@ -91,6 +92,7 @@
 		9BC1DB1B1BDE7EBA00A20600 /* FruglerNativeiOSWrapper */ = {
 			isa = PBXGroup;
 			children = (
+				880347071D00C1C300679A97 /* FruglerNativeiOSWrapper.entitlements */,
 				88B18E391C7D0F3E009086DA /* images */,
 				9BC1DB2E1BDE7EE300A20600 /* index.html */,
 				880347051CFE315400679A97 /* renew.html */,
@@ -146,6 +148,9 @@
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
 								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 0;
 							};
 						};
 					};

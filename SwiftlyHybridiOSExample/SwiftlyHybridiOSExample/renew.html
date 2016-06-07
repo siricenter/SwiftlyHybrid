@@ -27,26 +27,22 @@
     <head>
         <meta name="viewport" content="width=device-width">
             <meta name="viewport" content="initial-scale=1.0">
-                ​
+                
                 <!--Currenly not working-->
                 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-                    ​
-                    <script src="http://crypto-js.googlecode.com/svn/tags/3.1/build/rollups/aes.js"></script>
-                    ​
+                    
+                    <!--<script src="http://crypto-js.googlecode.com/svn/tags/3.1/build/rollups/aes.js"></script>-->
+                    <script type="text/javascript" src="http://cryptojs.altervista.org/api/functions_cryptography.js"></script>
+                    
                     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
                     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-                    ​
-                    ​
+                    
+                    
                     <script type="text/javascript" src="inter.js" charset="utf-8"></script>
                     <script type="text/javascript" src="main.js" charset="utf-8"></script>
                     <link rel="stylesheet" href="main.css">
-                        </head>
+    </head>
     <body>
-        <!--
-         <h1>Hello</h1>
-         <div id="messages_from_java">Count is 0</div>
-         <button onclick = "sendCount()">Click Me</button>
-         -->
         ​
         <h2 id="logo">FruGler</h2>
         <!-- <p id="build-version">10</p> -->
@@ -59,8 +55,11 @@
                 <p class="pricing-option" data-month="3" onclick="setTerm(this)">3 Month $12.99</p>
                 <p class="pricing-option" data-month="12" onclick="setTerm(this)"> 1 Year $44.99</p>
             </div>
-            <div id="renew-btn" data-term="" onclick="return renewPurchase(this)">Renew Subscription</div>
+            <div id="renew-btn" data-term="" onclick="return renewPurchase()">Renew Subscription</div>
             <div id="processing-btn">Processing...</div>
+            <div id="small-btn-wrapper">
+                <div class="small-btn" onclick="login()">Login</div>
+            </div>
         </div>
         <div id="test"></div>
     </body>

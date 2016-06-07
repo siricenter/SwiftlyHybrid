@@ -74,22 +74,12 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         let current_date = NSDate()
         print(current_date)
         var end_date:NSDate = NSDate(timeIntervalSinceReferenceDate: 0)// = endSub_date.objectForKey("date") as! NSDate
-
-//        let dateFormatter:NSDateFormatter = NSDateFormatter()
-//        dateFormatter.dateFormat = "yyyy-MM-dd"
-//        let current_DateInFormat:String = dateFormatter.stringFromDate(current_date)
-//        var endSub_DateInFormat:String = "nil"
-        
         // get the end sub date from memory
         if let end = endSub_date.objectForKey("date") {
             end_date = end as! NSDate
         } else {
             endSub_date.setObject(NSDate(timeIntervalSinceReferenceDate: 0), forKey: "date")
         }
-        
-        print(current_date < end_date)
-        print(end_date < current_date)
-        print(current_date == end_date)
         
         print(current_date)
         print(end_date)
@@ -186,13 +176,17 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                 buy12MonthSub()
             }
             
-            user_email = sentData["email"] as! String
-            response["user_email"] = user_email
-            ePass = sentData["ePass"] as! String
-            response["ePass"] = ePass
-            print("USER EMAIL: \(user_email)")
-            print("USER PASSW: \(ePass)")
-            //your purchase code goes here. 
+            if let _ = sentData["renew"] {
+                print("Renewing the purchase")
+            } else {
+                user_email = sentData["email"] as! String
+                response["user_email"] = user_email
+                ePass = sentData["ePass"] as! String
+                response["ePass"] = ePass
+                print("USER EMAIL: \(user_email)")
+                print("USER PASSW: \(ePass)")
+                //your purchase code goes here.
+            }
         }
         else if command == "onload" {
             response["purchaseError"] = purchaseError
@@ -200,7 +194,23 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         } else if command == "restorePurchases" {
             restorePurchases()
             response["restore"] = "restore purchase response"
-        } else if command == "log" {
+        } else if command == "login" {
+            let current_date = NSDate()
+            
+            if let end:NSDate = endSub_date.objectForKey("date") as? NSDate {
+                if (end == NSDate(timeIntervalSinceReferenceDate: 0)) {
+                    // User has never subscribed or there was a purchase error
+                    print("displayRegistration")
+                    displayRegistration()
+                } else if (current_date < end) {
+                    print("restorePurchases")
+                    restorePurchases()
+                } else if (end < current_date) {
+                    print("displayRenewing")
+                    displayRenewing()
+                }
+            }
+        }else if command == "log" {
             let value = sentData["string"] as? String
             print("JS: \(value)")
         } else if command == "displayApp" {
@@ -375,7 +385,8 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                         print("monthly payments: \(trans.transactionState.rawValue)")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         isSubed.setObject("YES", forKey: "subed")
-                        endSub_date.setObject(NSDate().dateByAddingTimeInterval(2678400), forKey: "date")
+                        endSub_date.setObject(NSDate().dateByAddingTimeInterval(120), forKey: "date")
+                        //endSub_date.setObject(NSDate().dateByAddingTimeInterval(2678400), forKey: "date")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         purchaseError = "false"
                         break
@@ -404,14 +415,16 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
             case .Failed:
                 print("Purchase error: \(trans.transactionState.rawValue)")
                 isSubed.setValue("NO", forKey: "subed")
-                endSub_date.setObject(NSDate(timeIntervalSinceReferenceDate: 0), forKey: "date")
                 purchaseError = "true"
                 queue.finishTransaction(trans)
                 
-
+                if (endSub_date.objectForKey("date") as! NSDate == NSDate(timeIntervalSinceReferenceDate: 0)){
+                    displayRegistration()
+                } else {
+                    displayRenewing()
+                }
                 
                 //TODO: need to display failure error
-                displayRegistration()
                 break
             case .Purchasing:
                 print("Purchasing right now")
