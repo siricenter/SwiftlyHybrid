@@ -385,8 +385,8 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                         print("monthly payments: \(trans.transactionState.rawValue)")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         isSubed.setObject("YES", forKey: "subed")
-                        endSub_date.setObject(NSDate().dateByAddingTimeInterval(120), forKey: "date")
-                        //endSub_date.setObject(NSDate().dateByAddingTimeInterval(2678400), forKey: "date")
+                        //endSub_date.setObject(NSDate().dateByAddingTimeInterval(120), forKey: "date")
+                        endSub_date.setObject(NSDate().dateByAddingTimeInterval(2678400), forKey: "date")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         purchaseError = "false"
                         break
