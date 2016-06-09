@@ -151,7 +151,16 @@ function restorePurchases() {
     native.postMessage(message)
 }
 function login() {
-    message = {"cmd":"login", "string":""}
+    message = {"cmd":"login", "string":"", "callbackFunc":function(responseAsJSON){
+//        var response = JSON.parse(responseAsJSON)
+//        if (response['login_error'] == "Reg") {
+//            document.querySelector("#login_error").innerText = "* Please Sign Up"
+//            
+//        } else if (response['login_error'] == "Renew") {
+//            document.querySelector("#renew_error").innerText = "* Your subscription has expired"
+//            
+//        }
+    }.toString()}
     native.postMessage(message)
 }
 
@@ -178,20 +187,25 @@ function renewPurchase() {
     var renewBtn = document.querySelector("#renew-btn");
     var plan = renewBtn.dataset.term;
     
-    message = {"cmd":"log", "string":"Does the renew button work? Plan " + plan}
-    native.postMessage(message)
-
-    message = {"cmd":"requestMonthlyPurchase", "plan": plan, "renew":"true", "callbackFunc":function(responseAsJSON){
-        message = {"cmd":"log", "string": "successCallback URL: " + currentURL}
+    if (plan == "1" || plan == "3" || plan == "12") {
+        message = {"cmd":"log", "string":"Does the renew button work? Plan " + plan}
         native.postMessage(message)
-        // load our webview
-        //                    replacePageWithURL("http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email='" + email + "'&password='" + ePass + "'")
-        replacePageWithURL(currentURL)
         
-    }.toString()}
-    native.postMessage(message)
-
-    
+        message = {"cmd":"requestMonthlyPurchase", "plan": plan, "renew":"true", "callbackFunc":function(responseAsJSON){
+            message = {"cmd":"log", "string": "successCallback URL: " + currentURL}
+            native.postMessage(message)
+            // load our webview
+            //                    replacePageWithURL("http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email='" + email + "'&password='" + ePass + "'")
+            replacePageWithURL(currentURL)
+            
+        }.toString()}
+        native.postMessage(message)
+    } else {
+        message = {"cmd":"log", "string":"Purchase error sub not selected"}
+        native.postMessage(message)
+        
+        document.querySelector("#renew_error").innerText = "* Please select a subscription period"
+    }
 }
 
 function confirmPurchase() {
@@ -215,6 +229,7 @@ function confirmPurchase() {
     //if fails, don't continue
     if (email && confEmail && password && confirmPwd) {
         if (confirmPwd == password && confEmail == email) {
+            if (plan == "1" || plan == "3" || plan == "12") {
             //{"name":username, "mail":email, "pass":password}
             
             purchaseBtn.style.display = "none"
@@ -248,7 +263,10 @@ function confirmPurchase() {
                 purchaseBtn.style.display = "block"
                 processingBtn.style.display = "none"
             })
-            
+            } else {
+                message = {"cmd":"log", "string":"Email or passwords do not match"}
+                document.querySelector("#login_error").innerText = "* Please select a subscription period"
+            }
         } else {
             message = {"cmd":"log", "string":"Email or passwords do not match"}
             document.querySelector("#login_error").innerText = "* Email or passwords do not match"

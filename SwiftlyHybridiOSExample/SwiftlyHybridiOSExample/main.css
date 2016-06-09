@@ -185,7 +185,7 @@ input:focus {
     color: #143756;
     border-bottom: 1px solid #143756;
 }
-#login_error {
+#login_error, #renew_error {
     color:red;
     margin: 10px 0 15px;
 }

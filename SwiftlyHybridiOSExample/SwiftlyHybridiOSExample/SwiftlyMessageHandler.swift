@@ -202,12 +202,14 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                     // User has never subscribed or there was a purchase error
                     print("displayRegistration")
                     displayRegistration()
+                    response["login_error"] = "Reg"
                 } else if (current_date < end) {
                     print("restorePurchases")
                     restorePurchases()
                 } else if (end < current_date) {
                     print("displayRenewing")
                     displayRenewing()
+                    response["login_error"] = "Renew"
                 }
             }
         }else if command == "log" {
@@ -398,14 +400,14 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         purchaseError = "false"
                         break
-                    case "com.myfrugler.frugler.sub12monthly":
-                        print("monthly payments: \(trans.transactionState.rawValue)")
-                        print("isSubed: ", isSubed.stringForKey("subed"))
-                        isSubed.setObject("YES", forKey: "subed")
-                        endSub_date.setObject(NSDate().dateByAddingTimeInterval(32140800), forKey: "date")
-                        print("isSubed: ", isSubed.stringForKey("subed"))
-                        purchaseError = "false"
-                        break
+//                    case "com.myfrugler.frugler.sub12monthly":
+//                        print("monthly payments: \(trans.transactionState.rawValue)")
+//                        print("isSubed: ", isSubed.stringForKey("subed"))
+//                        isSubed.setObject("YES", forKey: "subed")
+//                        endSub_date.setObject(NSDate().dateByAddingTimeInterval(32140800), forKey: "date")
+//                        print("isSubed: ", isSubed.stringForKey("subed"))
+//                        purchaseError = "false"
+//                        break
                     default:
                         print("IAP not setup")
                         isSubed.setValue("NO", forKey: "subed")
