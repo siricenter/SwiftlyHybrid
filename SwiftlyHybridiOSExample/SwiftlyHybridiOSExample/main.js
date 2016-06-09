@@ -28,11 +28,11 @@ var clicks = 0
 
 var theURL = 'http://ec2-54-152-204-90.compute-1.amazonaws.com'
 var theURL = 'https://www.google.com/'
-//var currentURL = 'https://www.f5admin.com/app'
-var currentURL = 'http://ec2-54-152-204-90.compute-1.amazonaws.com/app'
+var currentURL = 'https://www.f5admin.com/app'
+//var currentURL = 'http://ec2-54-152-204-90.compute-1.amazonaws.com/app'
 
 // set the root domain location for development, stage, or production
-var sysRoot = 'staging'
+var sysRoot = 'prod'
 
 var servicesRoot = ''
 if (sysRoot == 'local') {
@@ -195,7 +195,6 @@ function renewPurchase() {
             message = {"cmd":"log", "string": "successCallback URL: " + currentURL}
             native.postMessage(message)
             // load our webview
-            //                    replacePageWithURL("http://ec2-54-152-204-90.compute-1.amazonaws.com/app/?email='" + email + "'&password='" + ePass + "'")
             replacePageWithURL(currentURL)
             
         }.toString()}
@@ -219,7 +218,6 @@ function confirmPurchase() {
     var confEmail = document.querySelector("#confEmail").value
     var password = document.querySelector("#password").value
     var confirmPwd = document.querySelector("#confirmPwd").value
-    //var plan = document.querySelector('input[name="plan"]:checked').value
     var plan = purchaseBtn.dataset.term;
     
     message = {"cmd":"log", "string": "email contents outside: " + email + " plan: " + plan}
