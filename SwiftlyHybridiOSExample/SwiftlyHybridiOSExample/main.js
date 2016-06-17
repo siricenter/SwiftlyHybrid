@@ -80,8 +80,8 @@ window.onload = function() {
             var email = response['user_email']
             message = {"cmd":"log", "string":"JS purchaseERROR user_email:" + email}
             native.postMessage(message)
-            // TODO: delete/unauth user from our DB
             
+            // delete user from our DB
             var xhr = new XMLHttpRequest()
             var postUrl = servicesRoot + '/sec.php/'
             
@@ -293,7 +293,7 @@ function createAccount(email, password, successCallback, failureCallback) {
     native.postMessage(message)
 //    message = {"cmd":"log", "string": "password contents inside: " + password.value}
 //    native.postMessage(message)
-    var CryptoJS = new Crypt();
+//    var CryptoJS = new Crypt();
     
     var ePass = btoa(CryptoJS.AES.encrypt(password, "Frugler:dealzfordayz!"));
     
