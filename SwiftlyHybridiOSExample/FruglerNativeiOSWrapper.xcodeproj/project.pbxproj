@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		65E3693D3DED6C2FE1C67952 /* Pods_FruglerNativeiOSWrapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DE6AFFE47B9281E4D0D2CAA /* Pods_FruglerNativeiOSWrapper.framework */; };
 		880347061CFE315400679A97 /* renew.html in Resources */ = {isa = PBXBuildFile; fileRef = 880347051CFE315400679A97 /* renew.html */; };
 		88239C191D1358E700EBCE56 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 88239C181D1358E700EBCE56 /* GoogleService-Info.plist */; };
 		884DF56D1C7D28900049EE14 /* fruglericon80x80.png in Resources */ = {isa = PBXBuildFile; fileRef = 884DF56A1C7D28900049EE14 /* fruglericon80x80.png */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		09EA80763D9070A7EF6E81E6 /* Pods-FruglerNativeiOSWrapper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FruglerNativeiOSWrapper.release.xcconfig"; path = "Pods/Target Support Files/Pods-FruglerNativeiOSWrapper/Pods-FruglerNativeiOSWrapper.release.xcconfig"; sourceTree = "<group>"; };
 		880347051CFE315400679A97 /* renew.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = renew.html; sourceTree = "<group>"; };
 		880347071D00C1C300679A97 /* FruglerNativeiOSWrapper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = FruglerNativeiOSWrapper.entitlements; sourceTree = SOURCE_ROOT; };
 		88239C181D1358E700EBCE56 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -51,6 +53,8 @@
 		9BC1DB301BDE7EE300A20600 /* main.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = main.css; sourceTree = "<group>"; };
 		9BC1DB311BDE7EE300A20600 /* main.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = main.js; sourceTree = "<group>"; };
 		9BC1DB321BDE7EE300A20600 /* SwiftlyMessageHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftlyMessageHandler.swift; sourceTree = "<group>"; };
+		9DE6AFFE47B9281E4D0D2CAA /* Pods_FruglerNativeiOSWrapper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FruglerNativeiOSWrapper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5535798BDD7FBD47069513D /* Pods-FruglerNativeiOSWrapper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FruglerNativeiOSWrapper.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FruglerNativeiOSWrapper/Pods-FruglerNativeiOSWrapper.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +63,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				88F1DF1D1C20B5AC00087773 /* StoreKit.framework in Frameworks */,
+				65E3693D3DED6C2FE1C67952 /* Pods_FruglerNativeiOSWrapper.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +88,8 @@
 				88F1DF1C1C20B5AC00087773 /* StoreKit.framework */,
 				9BC1DB1B1BDE7EBA00A20600 /* FruglerNativeiOSWrapper */,
 				9BC1DB1A1BDE7EBA00A20600 /* Products */,
+				EA0724EF43A2FA9B2539792C /* Pods */,
+				F4CEE346396FC56BE8CA0AE6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -118,6 +125,23 @@
 			path = SwiftlyHybridiOSExample;
 			sourceTree = "<group>";
 		};
+		EA0724EF43A2FA9B2539792C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C5535798BDD7FBD47069513D /* Pods-FruglerNativeiOSWrapper.debug.xcconfig */,
+				09EA80763D9070A7EF6E81E6 /* Pods-FruglerNativeiOSWrapper.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		F4CEE346396FC56BE8CA0AE6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9DE6AFFE47B9281E4D0D2CAA /* Pods_FruglerNativeiOSWrapper.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -125,9 +149,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9BC1DB2B1BDE7EBA00A20600 /* Build configuration list for PBXNativeTarget "FruglerNativeiOSWrapper" */;
 			buildPhases = (
+				0B37D96FA1D0A84B2EAECEBE /* [CP] Check Pods Manifest.lock */,
 				9BC1DB151BDE7EBA00A20600 /* Sources */,
 				9BC1DB161BDE7EBA00A20600 /* Frameworks */,
 				9BC1DB171BDE7EBA00A20600 /* Resources */,
+				6C8F9A964AE345ED2FD25997 /* [CP] Embed Pods Frameworks */,
+				93C2D4DC098E75DDB9E35011 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -204,6 +231,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0B37D96FA1D0A84B2EAECEBE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		6C8F9A964AE345ED2FD25997 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FruglerNativeiOSWrapper/Pods-FruglerNativeiOSWrapper-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		93C2D4DC098E75DDB9E35011 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FruglerNativeiOSWrapper/Pods-FruglerNativeiOSWrapper-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		9BC1DB151BDE7EBA00A20600 /* Sources */ = {
@@ -321,6 +396,7 @@
 		};
 		9BC1DB2C1BDE7EBA00A20600 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C5535798BDD7FBD47069513D /* Pods-FruglerNativeiOSWrapper.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "";
@@ -335,6 +411,7 @@
 		};
 		9BC1DB2D1BDE7EBA00A20600 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 09EA80763D9070A7EF6E81E6 /* Pods-FruglerNativeiOSWrapper.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
