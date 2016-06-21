@@ -28,6 +28,8 @@ import WebKit
 
 import StoreKit
 
+import Firebase
+
 // for the NSDate objects
 public func ==(lhs: NSDate, rhs: NSDate) -> Bool {
     return lhs === rhs || lhs.compare(rhs) == .OrderedSame
@@ -44,6 +46,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
 
     var list = [SKProduct]()
     var p = SKProduct()
+    let purchaseRef = FIRDatabase.database().reference().child("purchases")
     
     // This is messy, but these "global"  variables are for the event of a faild purchase
     var purchaseError = "false"
@@ -60,7 +63,8 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
 
     init(theController:ViewController){
         super.init()
-    
+
+        
         let theConfiguration = WKWebViewConfiguration()
         
         theConfiguration.userContentController.addScriptMessageHandler(self, name: "native")
@@ -79,6 +83,15 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         } else {
             endSub_date.setObject(NSDate(timeIntervalSinceReferenceDate: 0), forKey: "date")
         }
+        
+        
+        // Working firebase call to retrieve user 12345's email
+//        purchaseRef.child("12345").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+//            let email = snapshot.value!["email"] as! String
+//            print("FIREBASE: " + email)
+//        }) { (error) in
+//            print("FIREBASE ERROR: " + error.localizedDescription)
+//        }
         
         print(current_date)
         print(end_date)
@@ -193,27 +206,37 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         } else if command == "restorePurchases" {
             restorePurchases()
             response["restore"] = "restore purchase response"
+        } else if command == "login" {
+            
+            //TODO: We are going to have to ping firebase for the end_date data.
+            //      Then we are going to have to set that data to the NSUserDefaults
+            //      if it exists.
+            
+            let current_date = NSDate()
+            if let end:NSDate = endSub_date.objectForKey("date") as? NSDate {
+                if (end == NSDate(timeIntervalSinceReferenceDate: 0)) {
+                    // User has never subscribed or there was a purchase error
+                    print("displayRegistration")
+//                    displayRegistration()
+                    response["login_error"] = "Reg_error"
+                } else if (current_date < end) {
+                    print("restorePurchases")
+//                    restorePurchases()
+                    
+                    response["login_error"] = "none"
+                } else if (end < current_date) {
+                    print("displayRenewing")
+//                    displayRenewing()
+                    response["login_error"] = "Experation_error"
+                }
+            }
         } else if command == "display_login" {
 //            let current_date = NSDate()
             print("displaying login")
             displayLogin()
             
             
-//            if let end:NSDate = endSub_date.objectForKey("date") as? NSDate {
-//                if (end == NSDate(timeIntervalSinceReferenceDate: 0)) {
-//                    // User has never subscribed or there was a purchase error
-//                    print("displayRegistration")
-//                    displayRegistration()
-//                    response["login_error"] = "Reg"
-//                } else if (current_date < end) {
-//                    print("restorePurchases")
-//                    restorePurchases()
-//                } else if (end < current_date) {
-//                    print("displayRenewing")
-//                    displayRenewing()
-//                    response["login_error"] = "Renew"
-//                }
-//            }
+
         } else if command == "display_register" {
             print("displaying registration")
             displayRegistration()
@@ -402,9 +425,15 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         isSubed.setObject("YES", forKey: "subed")
                         //endSub_date.setObject(NSDate().dateByAddingTimeInterval(120), forKey: "date")
-                        endSub_date.setObject(NSDate().dateByAddingTimeInterval(2678400), forKey: "date")
+                        let renewDate = NSDate().dateByAddingTimeInterval(2678400)
+                        endSub_date.setObject(renewDate, forKey: "date")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         purchaseError = "false"
+                        
+//                        purchaseRef.childByAutoId().setValue(["email":user_email,
+//                            "product": 1,
+//                            "renewDate":renewDate])
+                        
                         break
                     case "com.myfrugler.frugler.sub3monthly":
                         print("monthly payments: \(trans.transactionState.rawValue)")

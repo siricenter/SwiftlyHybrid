@@ -226,37 +226,35 @@ function confirmLogin() {
     var email = document.querySelector("#email").value
     var password = document.querySelector("#password").value
 
+    var error = document.querySelector("#login_error");
+    
     loginBtn.style.display = "none"
     processingBtn.style.display = "block"
     
     
-    
-    
-    
-    
-    // TODO's: These need implemented and put in the right order...
-    
-    // TODO: Validate that the user credentials have been entered
-    
-    // TODO: Check that the user has a live subscription in NSUserDefaults
+    message = {"cmd":"login", "email": email, "ePass": ePass, "callbackFunc":function(responseAsJSON){
+        var response = JSON.parse(responseAsJSON)
+        
+        var login_error = response['login_error']
+        
+        if (login_error == "Reg_error") {
+            error.innerText = "* No registration for this device"
+        } else if (login_error == "Experation_error") {
+            error.innerText = "* Expired Subscription"
+        
+            // TODO: save
+        } else {
+            var ePass = btoa(CryptoJS.AES.encrypt(password, "Frugler:dealzfordayz!"));
+            
+            message = {"cmd":"log", "string":"login: " + email + " " + password + " " + ePass}
+            native.postMessage(message)
 
-    // TODO: Check that the user exists in Firebase
-    
-    // TODO: update NSUserDefaults
-
-    // TODO: Display any Errors
-    
-    // if live sub, log user in
-    
-    
-    // else show renew screen
-
-    var ePass = btoa(CryptoJS.AES.encrypt(password, "Frugler:dealzfordayz!"));
-    
-    message = {"cmd":"log", "string":"login: " + email + " " + password + " " + ePass}
+            replacePageWithURL(currentURL + "?email='" + email + "'&password='" + ePass + "'")
+        }
+    }.toString()}
     native.postMessage(message)
+
     
-    replacePageWithURL(currentURL + "?email='" + email + "'&password='" + ePass + "'")
 
     
 }
