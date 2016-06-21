@@ -13,6 +13,7 @@
 		884DF56E1C7D28900049EE14 /* fruglericon120x120.png in Resources */ = {isa = PBXBuildFile; fileRef = 884DF56B1C7D28900049EE14 /* fruglericon120x120.png */; };
 		884DF5701C7D29E60049EE14 /* fruglericon58x58.png in Resources */ = {isa = PBXBuildFile; fileRef = 884DF56F1C7D29E60049EE14 /* fruglericon58x58.png */; };
 		8851085A1C6404EB005A8483 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 885108591C6404EB005A8483 /* .gitignore */; };
+		8868E4DD1D14A18100630D55 /* login.html in Resources */ = {isa = PBXBuildFile; fileRef = 8868E4DC1D14A18100630D55 /* login.html */; };
 		88B18E381C7D0B44009086DA /* fruglericon.png in Resources */ = {isa = PBXBuildFile; fileRef = 88B18E371C7D0B44009086DA /* fruglericon.png */; };
 		88F1DF1D1C20B5AC00087773 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88F1DF1C1C20B5AC00087773 /* StoreKit.framework */; };
 		9BC1DB1D1BDE7EBA00A20600 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC1DB1C1BDE7EBA00A20600 /* AppDelegate.swift */; };
@@ -30,11 +31,12 @@
 /* Begin PBXFileReference section */
 		880347051CFE315400679A97 /* renew.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = renew.html; sourceTree = "<group>"; };
 		880347071D00C1C300679A97 /* FruglerNativeiOSWrapper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = FruglerNativeiOSWrapper.entitlements; sourceTree = SOURCE_ROOT; };
-		88239C181D1358E700EBCE56 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		88239C181D1358E700EBCE56 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		884DF56A1C7D28900049EE14 /* fruglericon80x80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fruglericon80x80.png; sourceTree = "<group>"; };
 		884DF56B1C7D28900049EE14 /* fruglericon120x120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fruglericon120x120.png; sourceTree = "<group>"; };
 		884DF56F1C7D29E60049EE14 /* fruglericon58x58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fruglericon58x58.png; sourceTree = "<group>"; };
 		885108591C6404EB005A8483 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		8868E4DC1D14A18100630D55 /* login.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = login.html; sourceTree = "<group>"; };
 		88B18E371C7D0B44009086DA /* fruglericon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fruglericon.png; sourceTree = "<group>"; };
 		88F1DF1C1C20B5AC00087773 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		9BC1DB191BDE7EBA00A20600 /* FruglerNativeiOSWrapper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FruglerNativeiOSWrapper.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +79,7 @@
 		9BC1DB101BDE7EBA00A20600 = {
 			isa = PBXGroup;
 			children = (
+				88239C181D1358E700EBCE56 /* GoogleService-Info.plist */,
 				88F1DF1C1C20B5AC00087773 /* StoreKit.framework */,
 				9BC1DB1B1BDE7EBA00A20600 /* FruglerNativeiOSWrapper */,
 				9BC1DB1A1BDE7EBA00A20600 /* Products */,
@@ -98,6 +101,7 @@
 				88B18E391C7D0F3E009086DA /* images */,
 				9BC1DB2E1BDE7EE300A20600 /* index.html */,
 				880347051CFE315400679A97 /* renew.html */,
+				8868E4DC1D14A18100630D55 /* login.html */,
 				9BC1DB2F1BDE7EE300A20600 /* inter.js */,
 				9BC1DB301BDE7EE300A20600 /* main.css */,
 				9BC1DB311BDE7EE300A20600 /* main.js */,
@@ -108,7 +112,6 @@
 				9BC1DB231BDE7EBA00A20600 /* Assets.xcassets */,
 				9BC1DB251BDE7EBA00A20600 /* LaunchScreen.storyboard */,
 				9BC1DB281BDE7EBA00A20600 /* Info.plist */,
-				88239C181D1358E700EBCE56 /* GoogleService-Info.plist */,
 				885108591C6404EB005A8483 /* .gitignore */,
 			);
 			name = FruglerNativeiOSWrapper;
@@ -184,6 +187,7 @@
 			files = (
 				8851085A1C6404EB005A8483 /* .gitignore in Resources */,
 				9BC1DB271BDE7EBA00A20600 /* LaunchScreen.storyboard in Resources */,
+				8868E4DD1D14A18100630D55 /* login.html in Resources */,
 				9BC1DB331BDE7EE300A20600 /* index.html in Resources */,
 				884DF56E1C7D28900049EE14 /* fruglericon120x120.png in Resources */,
 				9BC1DB351BDE7EE300A20600 /* main.css in Resources */,

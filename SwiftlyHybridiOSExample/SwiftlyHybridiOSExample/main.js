@@ -28,11 +28,11 @@ var clicks = 0
 
 var theURL = 'http://ec2-54-152-204-90.compute-1.amazonaws.com'
 var theURL = 'https://www.google.com/'
-var currentURL = 'https://www.f5admin.com/app'
-//var currentURL = 'http://ec2-54-152-204-90.compute-1.amazonaws.com/app'
+//var currentURL = 'https://www.f5admin.com/app'
+var currentURL = 'http://ec2-54-152-204-90.compute-1.amazonaws.com/app'
 
 // set the root domain location for development, stage, or production
-var sysRoot = 'prod'
+var sysRoot = 'staging'
 
 var servicesRoot = ''
 if (sysRoot == 'local') {
@@ -150,8 +150,8 @@ function restorePurchases() {
     }
     native.postMessage(message)
 }
-function login() {
-    message = {"cmd":"login", "string":"", "callbackFunc":function(responseAsJSON){
+function displayLogin() {
+    message = {"cmd":"display_login", "string":"", "callbackFunc":function(responseAsJSON){
 //        var response = JSON.parse(responseAsJSON)
 //        if (response['login_error'] == "Reg") {
 //            document.querySelector("#login_error").innerText = "* Please Sign Up"
@@ -160,6 +160,12 @@ function login() {
 //            document.querySelector("#renew_error").innerText = "* Your subscription has expired"
 //            
 //        }
+    }.toString()}
+    native.postMessage(message)
+}
+
+function displayRegister() {
+    message = {"cmd":"display_register", "string":"", "callbackFunc":function(responseAsJSON){
     }.toString()}
     native.postMessage(message)
 }
@@ -194,6 +200,10 @@ function renewPurchase() {
         message = {"cmd":"requestMonthlyPurchase", "plan": plan, "renew":"true", "callbackFunc":function(responseAsJSON){
             message = {"cmd":"log", "string": "successCallback URL: " + currentURL}
             native.postMessage(message)
+            
+            // TODO: update user sub date in Firebase
+            
+            
             // load our webview
             replacePageWithURL(currentURL)
             
@@ -205,6 +215,50 @@ function renewPurchase() {
         
         document.querySelector("#renew_error").innerText = "* Please select a subscription period"
     }
+}
+
+function confirmLogin() {
+    message = {"cmd":"log", "string":"does this confirm login button work?"}
+    native.postMessage(message)
+    // TODO: Get all the elements from html
+    var loginBtn = document.querySelector("#login-btn")
+    var processingBtn = document.querySelector("#processing-btn")
+    var email = document.querySelector("#email").value
+    var password = document.querySelector("#password").value
+
+    loginBtn.style.display = "none"
+    processingBtn.style.display = "block"
+    
+    
+    
+    
+    
+    
+    // TODO's: These need implemented and put in the right order...
+    
+    // TODO: Validate that the user credentials have been entered
+    
+    // TODO: Check that the user has a live subscription in NSUserDefaults
+
+    // TODO: Check that the user exists in Firebase
+    
+    // TODO: update NSUserDefaults
+
+    // TODO: Display any Errors
+    
+    // if live sub, log user in
+    
+    
+    // else show renew screen
+
+    var ePass = btoa(CryptoJS.AES.encrypt(password, "Frugler:dealzfordayz!"));
+    
+    message = {"cmd":"log", "string":"login: " + email + " " + password + " " + ePass}
+    native.postMessage(message)
+    
+    replacePageWithURL(currentURL + "?email='" + email + "'&password='" + ePass + "'")
+
+    
 }
 
 function confirmPurchase() {

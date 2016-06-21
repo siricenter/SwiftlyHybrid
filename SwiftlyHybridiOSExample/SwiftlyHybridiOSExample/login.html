@@ -1,19 +1,19 @@
 <!--
- ​
+ 
  The MIT License (MIT)
- ​
+ 
  Copyright (c) 2015 Lee Barney
- ​
+ 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
  in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
- ​
+ 
  The above copyright notice and this permission notice shall be included in all
  copies or substantial portions of the Software.
- ​
+ 
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,7 +21,7 @@
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
- ​
+ 
  !-->
 <html>
     <head>
@@ -31,8 +31,8 @@
                 <!--Currenly not working-->
                 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
                     
-                    <!--<script src="http://crypto-js.googlecode.com/svn/tags/3.1/build/rollups/aes.js"></script>-->
-                    <script type="text/javascript" src="http://cryptojs.altervista.org/api/functions_cryptography.js"></script>
+<!--                    <script src="http://crypto-js.googlecode.com/svn/tags/3.1/build/rollups/aes.js"></script>-->
+                    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
                     
                     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
                     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -41,24 +41,26 @@
                     <script type="text/javascript" src="inter.js" charset="utf-8"></script>
                     <script type="text/javascript" src="main.js" charset="utf-8"></script>
                     <link rel="stylesheet" href="main.css">
-    </head>
+                        </head>
     <body>
-        ​
+        <!--
+         <h1>Hello</h1>
+         <div id="messages_from_java">Count is 0</div>
+         <button onclick = "sendCount()">Click Me</button>
+         -->
+        
         <h2 id="logo">FruGler</h2>
-        <!-- <p id="build-version">10</p> -->
-        <h1>Renew</h1>
-        <p id="trial-text">Subscription</p>
+        <p id="build-version">10</p>
+        <h1>Login</h1>
         <div>
-            <div class="required"><span id="renew_error"></span></div>
-            <div id="pricing">
-                <p class="pricing-option" data-month="1" onclick="setTerm(this)">1 Month  $4.99</p>
-                <p class="pricing-option" data-month="3" onclick="setTerm(this)">3 Month $12.99</p>
-                <!--<p class="pricing-option" data-month="12" onclick="setTerm(this)"> 1 Year $44.99</p>-->
-            </div>
-            <div id="renew-btn" data-term="" onclick="return renewPurchase()">Renew Subscription</div>
-            <div id="processing-btn">Processing...</div>
+            <div class="required"><span id="login_error"></span></div>
+            <div class="required"><span class="req_fields">* </span><input type="email" class="" id="email" placeholder="Email"></div>
+            <div class="required"><span class="req_fields">* </span><input type="password" class="" id="password" placeholder="Password"></div>
+            <div><span class="req_fields">* - required field</span></div>
+            <div id="login-btn" onclick="return confirmLogin()">Let's Go!</div>
+            <div id="processing-btn">Hold On...</div>
             <div id="small-btn-wrapper">
-                <div class="small-btn" onclick="displayLogin()">Login</div>
+                <div class="small-btn" onclick="displayRegister()">Register</div>
             </div>
         </div>
         <div id="test"></div>

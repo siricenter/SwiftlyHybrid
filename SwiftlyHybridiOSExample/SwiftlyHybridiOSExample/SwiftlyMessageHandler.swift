@@ -51,8 +51,8 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
     var ePass = ""
     var reg_error = false
     
-//    let the_url:String = "http://ec2-54-152-204-90.compute-1.amazonaws.com/app"
-    let the_url:String = "https://www.f5admin.com/app"
+    let the_url:String = "http://ec2-54-152-204-90.compute-1.amazonaws.com/app"
+//    let the_url:String = "https://www.f5admin.com/app"
     
     
     let isSubed = NSUserDefaults.standardUserDefaults()
@@ -193,25 +193,31 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         } else if command == "restorePurchases" {
             restorePurchases()
             response["restore"] = "restore purchase response"
-        } else if command == "login" {
-            let current_date = NSDate()
+        } else if command == "display_login" {
+//            let current_date = NSDate()
+            print("displaying login")
+            displayLogin()
             
-            if let end:NSDate = endSub_date.objectForKey("date") as? NSDate {
-                if (end == NSDate(timeIntervalSinceReferenceDate: 0)) {
-                    // User has never subscribed or there was a purchase error
-                    print("displayRegistration")
-                    displayRegistration()
-                    response["login_error"] = "Reg"
-                } else if (current_date < end) {
-                    print("restorePurchases")
-                    restorePurchases()
-                } else if (end < current_date) {
-                    print("displayRenewing")
-                    displayRenewing()
-                    response["login_error"] = "Renew"
-                }
-            }
-        }else if command == "log" {
+            
+//            if let end:NSDate = endSub_date.objectForKey("date") as? NSDate {
+//                if (end == NSDate(timeIntervalSinceReferenceDate: 0)) {
+//                    // User has never subscribed or there was a purchase error
+//                    print("displayRegistration")
+//                    displayRegistration()
+//                    response["login_error"] = "Reg"
+//                } else if (current_date < end) {
+//                    print("restorePurchases")
+//                    restorePurchases()
+//                } else if (end < current_date) {
+//                    print("displayRenewing")
+//                    displayRenewing()
+//                    response["login_error"] = "Renew"
+//                }
+//            }
+        } else if command == "display_register" {
+            print("displaying registration")
+            displayRegistration()
+        } else if command == "log" {
             let value = sentData["string"] as? String
             print("JS: \(value)")
         } else if command == "displayApp" {
@@ -289,7 +295,16 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         
         let request = NSURLRequest(URL: url)
         appWebView!.loadRequest(request)
-        print("registration displayed")
+        print("renewing displayed")
+    }
+    
+    func displayLogin() {
+        let renewHTMLPath = NSBundle.mainBundle().pathForResource("login", ofType: "html")
+        let url = NSURL(fileURLWithPath: renewHTMLPath!)
+        
+        let request = NSURLRequest(URL: url)
+        appWebView!.loadRequest(request)
+        print("login displayed")
     }
     
     func restorePurchases() {
