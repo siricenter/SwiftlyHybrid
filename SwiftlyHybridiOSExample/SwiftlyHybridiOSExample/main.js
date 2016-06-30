@@ -220,7 +220,6 @@ function renewPurchase() {
 function confirmLogin() {
     message = {"cmd":"log", "string":"does this confirm login button work?"}
     native.postMessage(message)
-    // TODO: Get all the elements from html
     var loginBtn = document.querySelector("#login-btn")
     var processingBtn = document.querySelector("#processing-btn")
     var email = document.querySelector("#email").value
@@ -230,33 +229,39 @@ function confirmLogin() {
     
     loginBtn.style.display = "none"
     processingBtn.style.display = "block"
-    
-    
-    message = {"cmd":"login", "email": email, "ePass": ePass, "callbackFunc":function(responseAsJSON){
-        var response = JSON.parse(responseAsJSON)
-        
-        var login_error = response['login_error']
-        
-        if (login_error == "Reg_error") {
-            error.innerText = "* No registration for this device"
-        } else if (login_error == "Experation_error") {
-            error.innerText = "* Expired Subscription"
-        
-            // TODO: save
-        } else {
-            var ePass = btoa(CryptoJS.AES.encrypt(password, "Frugler:dealzfordayz!"));
-            
-            message = {"cmd":"log", "string":"login: " + email + " " + password + " " + ePass}
+
+    if (email && password) {
+        message = {"cmd":"login", "email": email, "password": password, "loginCallbackFunc":function(responseAsJSON){
+            message = {"cmd":"log", "string":"Login response!!!!!!!!!!!!!!!!!!"}
             native.postMessage(message)
-
-            replacePageWithURL(currentURL + "?email='" + email + "'&password='" + ePass + "'")
-        }
-    }.toString()}
-    native.postMessage(message)
-
-    
-
-    
+            
+            var response = JSON.parse(responseAsJSON)
+            var error = document.querySelector("#login_error");
+            var login_error = response['login_error']
+            var email = response['email']
+            var password = response['pass']
+            
+            if (login_error == "reg_error") {
+                error.innerText = "* No registration for this device"
+            } else if (login_error == "exp_error") {
+                error.innerText = "* Expired Subscription"
+            } else if (login_error == "fb_error") {
+                error.innerText = "* No Internet Connection. Please check connection and try again."
+            }else if (login_error == "none") {
+                var ePass = btoa(CryptoJS.AES.encrypt(password, "Frugler:dealzfordayz!"));
+                
+                message = {"cmd":"log", "string":"login: " + email + " " + password + " " + ePass}
+                native.postMessage(message)
+                
+                replacePageWithURL(currentURL + "?email='" + email + "'&password='" + ePass + "'")
+            }
+        }.toString()}
+        native.postMessage(message)
+    } else {
+        error.innerText = "* Please enter valid username and password."
+    }
+    loginBtn.style.display = "block"
+    processingBtn.style.display = "none"
 }
 
 function confirmPurchase() {

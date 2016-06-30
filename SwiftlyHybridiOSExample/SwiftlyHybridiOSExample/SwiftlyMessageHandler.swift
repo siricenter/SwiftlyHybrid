@@ -86,13 +86,22 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         
         
         // Working firebase call to retrieve user 12345's email
-//        purchaseRef.child("12345").observeSingleEventOfType(.Value, withBlock: { (snapshot) in
+//        let dateFormatter = NSDateFormatter()
+//        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss.SSS +zzz"
+//        
+//        
+//        purchaseRef.queryOrderedByChild("email").queryEqualToValue("wild@cherry.lol").observeSingleEventOfType(.ChildAdded, withBlock: { snapshot in
 //            let email = snapshot.value!["email"] as! String
-//            print("FIREBASE: " + email)
+//            let date_fb = snapshot.value!["renewDate"] as! String
+//            
+//            let date:NSDate = dateFormatter.dateFromString(date_fb)!
+//            
+//            print("FIREBASE email: " + email + " renewDate: " + date_fb)
+//            print(date)
 //        }) { (error) in
 //            print("FIREBASE ERROR: " + error.localizedDescription)
 //        }
-        
+
         print(current_date)
         print(end_date)
         
@@ -208,28 +217,68 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
             response["restore"] = "restore purchase response"
         } else if command == "login" {
             
-            //TODO: We are going to have to ping firebase for the end_date data.
-            //      Then we are going to have to set that data to the NSUserDefaults
-            //      if it exists.
+            user_email = sentData["email"] as! String
+            let pass = sentData["password"] as! String
+            //ePass = sentData["ePass"] as! String
             
-            let current_date = NSDate()
-            if let end:NSDate = endSub_date.objectForKey("date") as? NSDate {
-                if (end == NSDate(timeIntervalSinceReferenceDate: 0)) {
-                    // User has never subscribed or there was a purchase error
-                    print("displayRegistration")
-//                    displayRegistration()
-                    response["login_error"] = "Reg_error"
-                } else if (current_date < end) {
-                    print("restorePurchases")
-//                    restorePurchases()
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss.SSS +zzz"
+        
+            purchaseRef.queryOrderedByChild("email").queryEqualToValue(user_email).observeEventType(.Value, withBlock: { snapshot in
+                
+                if (!snapshot.exists()) {
+                    print("Email is null")
+                    response["login_error"] = "reg_error"
+                } else {
+                     for child in snapshot.children {
+                        let childSnapshot = snapshot.childSnapshotForPath(child.key)
+                        
+                        let date_fb:String = childSnapshot.value!["renewDate"] as! String
                     
-                    response["login_error"] = "none"
-                } else if (end < current_date) {
-                    print("displayRenewing")
-//                    displayRenewing()
-                    response["login_error"] = "Experation_error"
+                        let email = childSnapshot.value!["email"] as! String
+                        
+                        let renewDate:NSDate = dateFormatter.dateFromString(date_fb)!
+                        
+                        print("FIREBASE email: " + email + " renewDate: " + date_fb)
+                        print(renewDate)
+                        
+                        // Update the endSub_date NSUserDefaults
+                        self.endSub_date.setObject(renewDate, forKey: "date")
+                        
+                        let current_date = NSDate()
+                        if let end:NSDate = self.endSub_date.objectForKey("date") as? NSDate {
+                            if (end == NSDate(timeIntervalSinceReferenceDate: 0)) {
+                                // User has never subscribed or there was a purchase error
+                                print("displayRegistration")
+                                // TODO: Display login error message
+                                response["login_error"] = "reg_error"
+                            } else if (current_date < end) {
+                                print("displayFrugler")
+                                response["email"] = self.user_email
+                                response["pass"] = pass
+                                
+                                response["login_error"] = "none"
+                            } else if (end < current_date) {
+                                print("displayRenewing")
+                                //                    displayRenewing()
+                                response["login_error"] = "exp_error"
+                            }
+                        }
+                    }
                 }
+                
+                let callbackString = sentData["loginCallbackFunc"] as? String
+                self.sendResponse(response, callback: callbackString)
+                
+            }) { (error) in
+                print("FIREBASE ERROR: " + error.localizedDescription)
+                response["login_error"] = "fb_error"
+                let callbackString = sentData["loginCallbackFunc"] as? String
+                self.sendResponse(response, callback: callbackString)
             }
+            
+            
+
         } else if command == "display_login" {
 //            let current_date = NSDate()
             print("displaying login")
@@ -407,6 +456,11 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
     
     func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         print("start paymentQueue") //itunes signin popup showing up about here
+
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd hh:mm:ss.SSS +zzz"
+        var renewDate:NSDate
+        
         
         for transaction:SKPaymentTransaction in transactions {
             let trans = transaction
@@ -424,24 +478,26 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                         print("monthly payments: \(trans.transactionState.rawValue)")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         isSubed.setObject("YES", forKey: "subed")
-                        //endSub_date.setObject(NSDate().dateByAddingTimeInterval(120), forKey: "date")
-                        let renewDate = NSDate().dateByAddingTimeInterval(2678400)
+                        renewDate = NSDate().dateByAddingTimeInterval(120)
+//                        renewDate = NSDate().dateByAddingTimeInterval(2678400)
                         endSub_date.setObject(renewDate, forKey: "date")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         purchaseError = "false"
-                        
-//                        purchaseRef.childByAutoId().setValue(["email":user_email,
-//                            "product": 1,
-//                            "renewDate":renewDate])
+            
+                        purchaseRef.childByAutoId().setValue(["email":user_email, "product": 1, "renewDate": formatter.stringFromDate(renewDate)])
                         
                         break
                     case "com.myfrugler.frugler.sub3monthly":
                         print("monthly payments: \(trans.transactionState.rawValue)")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         isSubed.setObject("YES", forKey: "subed")
-                        endSub_date.setObject(NSDate().dateByAddingTimeInterval(8035200), forKey: "date")
+                        renewDate = NSDate().dateByAddingTimeInterval(8035200)
+                        endSub_date.setObject(renewDate, forKey: "date")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         purchaseError = "false"
+
+                        purchaseRef.childByAutoId().setValue(["email":user_email, "product": 3, "renewDate": formatter.stringFromDate(renewDate)])
+                        
                         break
 //                    case "com.myfrugler.frugler.sub12monthly":
 //                        print("monthly payments: \(trans.transactionState.rawValue)")
@@ -458,7 +514,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                 queue.finishTransaction(trans)
                 break
             case .Failed:
-                print("Purchase error: \(trans.transactionState.rawValue)")
+                print("Purchase error: \(trans.error)")
                 isSubed.setValue("NO", forKey: "subed")
                 purchaseError = "true"
                 queue.finishTransaction(trans)
@@ -515,3 +571,4 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         SKPaymentQueue.defaultQueue().finishTransaction(trans)
     }
 }
+//
