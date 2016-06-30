@@ -28,11 +28,11 @@ var clicks = 0
 
 var theURL = 'http://ec2-54-152-204-90.compute-1.amazonaws.com'
 var theURL = 'https://www.google.com/'
-//var currentURL = 'https://www.f5admin.com/app'
-var currentURL = 'http://ec2-54-152-204-90.compute-1.amazonaws.com/app'
+var currentURL = 'https://www.f5admin.com/app'
+//var currentURL = 'http://ec2-54-152-204-90.compute-1.amazonaws.com/app'
 
 // set the root domain location for development, stage, or production
-var sysRoot = 'staging'
+var sysRoot = 'prod'
 
 var servicesRoot = ''
 if (sysRoot == 'local') {
@@ -151,22 +151,15 @@ function restorePurchases() {
     native.postMessage(message)
 }
 function displayLogin() {
-    message = {"cmd":"display_login", "string":"", "callbackFunc":function(responseAsJSON){
-//        var response = JSON.parse(responseAsJSON)
-//        if (response['login_error'] == "Reg") {
-//            document.querySelector("#login_error").innerText = "* Please Sign Up"
-//            
-//        } else if (response['login_error'] == "Renew") {
-//            document.querySelector("#renew_error").innerText = "* Your subscription has expired"
-//            
-//        }
-    }.toString()}
+    message = {"cmd":"display_login"}
     native.postMessage(message)
 }
-
 function displayRegister() {
-    message = {"cmd":"display_register", "string":"", "callbackFunc":function(responseAsJSON){
-    }.toString()}
+    message = {"cmd":"display_register"}
+    native.postMessage(message)
+}
+function displayRenew() {
+    message = {"cmd":"display_renew"}
     native.postMessage(message)
 }
 
@@ -244,7 +237,7 @@ function confirmLogin() {
             if (login_error == "reg_error") {
                 error.innerText = "* No registration for this device"
             } else if (login_error == "exp_error") {
-                error.innerText = "* Expired Subscription"
+                error.innerHTML = "* Expired Subscription. <a class='small-btn' onclick='displayRenew()'>Renew</a>?"
             } else if (login_error == "fb_error") {
                 error.innerText = "* No Internet Connection. Please check connection and try again."
             }else if (login_error == "none") {
