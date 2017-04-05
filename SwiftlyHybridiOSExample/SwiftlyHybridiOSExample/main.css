@@ -188,6 +188,7 @@ input:focus {
 }
 #login_error, #renew_error {
     color:red;
+    text-align: center;
     margin: 10px 0 15px;
 }
 .required {
@@ -197,4 +198,9 @@ input:focus {
 .req_fields {
     color: red;
     display: none;
+}
+
+#user-email {
+    color: white;
+    text-align: center;
 }

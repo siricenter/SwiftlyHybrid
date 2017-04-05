@@ -28,11 +28,11 @@ var clicks = 0
 
 var theURL = 'http://ec2-54-152-204-90.compute-1.amazonaws.com'
 var theURL = 'https://www.google.com/'
-var currentURL = 'https://www.f5admin.com/app'
-//var currentURL = 'http://ec2-54-152-204-90.compute-1.amazonaws.com/app'
+//var currentURL = 'https://www.f5admin.com/app'
+var currentURL = 'http://ec2-54-152-204-90.compute-1.amazonaws.com/app'
 
 // set the root domain location for development, stage, or production
-var sysRoot = 'prod'
+var sysRoot = 'staging'
 
 var servicesRoot = ''
 if (sysRoot == 'local') {
@@ -182,6 +182,28 @@ function setTerm(el) {
 //function renewPurchase(el) {
 //}
 
+function getUserEmail() {
+    message = {"cmd":"getUserEmail", "callbackFunc":function(responseAsJSON){
+        var response = JSON.parse(responseAsJSON)
+        var email = response['email']
+        
+        userEmail = document.querySelector("#user-email");
+        
+        
+        message = {"cmd":"log", "string":"user email " + email}
+        native.postMessage(message)
+        
+        if (email == "error") {
+            userEmail.innerHTML = "* WARNING: Will not sync accross devices. Please try loging in first. <a class='small-btn' onclick='displayLogin()'>Login</a>";
+            userEmail.style.color = "red";
+        } else {
+            userEmail.innerHTML = email
+        }
+        
+    }.toString()}
+    native.postMessage(message)
+}
+
 function renewPurchase() {
     var renewBtn = document.querySelector("#renew-btn");
     var plan = renewBtn.dataset.term;
@@ -237,7 +259,7 @@ function confirmLogin() {
             if (login_error == "reg_error") {
                 error.innerText = "* No registration for this device"
             } else if (login_error == "exp_error") {
-                error.innerHTML = "* Expired Subscription. <a class='small-btn' onclick='displayRenew()'>Renew</a>?"
+                error.innerHTML = "* Subscription Expired. <a class='small-btn' onclick='displayRenew()'>Renew</a>?"
             } else if (login_error == "fb_error") {
                 error.innerText = "* No Internet Connection. Please check connection and try again."
             }else if (login_error == "none") {

@@ -48,18 +48,19 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
     var p = SKProduct()
     let purchaseRef = FIRDatabase.database().reference().child("purchases")
     
-    // This is messy, but these "global"  variables are for the event of a faild purchase
+    // This is messy, but these "global"  variables are for the event of a failed purchase
     var purchaseError = "false"
     var user_email = ""
     var ePass = ""
     var reg_error = false
     
-//    let the_url:String = "http://ec2-54-152-204-90.compute-1.amazonaws.com/app"
-    let the_url:String = "https://www.f5admin.com/app"
+    let the_url:String = "http://ec2-54-152-204-90.compute-1.amazonaws.com/app"
+//    let the_url:String = "https://www.f5admin.com/app"
     
     
     let isSubed = NSUserDefaults.standardUserDefaults()
     let endSub_date = NSUserDefaults.standardUserDefaults()
+    let userEmail = NSUserDefaults.standardUserDefaults()
 
     init(theController:ViewController){
         super.init()
@@ -73,6 +74,12 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         theController.view.addSubview(appWebView!)
         // Remove the iOS scroll bounce as it messes with our webview scrolling
         appWebView?.scrollView.bounces = false;
+    
+        if let email = userEmail.stringForKey("email") {
+            user_email = email
+        } else {
+            user_email = ""
+        }
         
         let current_date = NSDate()
         print(current_date)
@@ -83,24 +90,6 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         } else {
             endSub_date.setObject(NSDate(timeIntervalSinceReferenceDate: 0), forKey: "date")
         }
-        
-        
-        // Working firebase call to retrieve user 12345's email
-//        let dateFormatter = NSDateFormatter()
-//        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss.SSS +zzz"
-//        
-//        
-//        purchaseRef.queryOrderedByChild("email").queryEqualToValue("wild@cherry.lol").observeSingleEventOfType(.ChildAdded, withBlock: { snapshot in
-//            let email = snapshot.value!["email"] as! String
-//            let date_fb = snapshot.value!["renewDate"] as! String
-//            
-//            let date:NSDate = dateFormatter.dateFromString(date_fb)!
-//            
-//            print("FIREBASE email: " + email + " renewDate: " + date_fb)
-//            print(date)
-//        }) { (error) in
-//            print("FIREBASE ERROR: " + error.localizedDescription)
-//        }
 
         print(current_date)
         print(end_date)
@@ -202,6 +191,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
             } else {
                 user_email = sentData["email"] as! String
                 response["user_email"] = user_email
+                userEmail.setObject(user_email, forKey: "email")
                 ePass = sentData["ePass"] as! String
                 response["ePass"] = ePass
                 print("USER EMAIL: \(user_email)")
@@ -218,6 +208,7 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
         } else if command == "login" {
             
             user_email = sentData["email"] as! String
+            userEmail.setObject(user_email, forKey: "email")
             let pass = sentData["password"] as! String
             //ePass = sentData["ePass"] as! String
             
@@ -237,8 +228,6 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                         let date_fb:String = childSnapshot.value!["renewDate"] as! String
                         
                         let email = childSnapshot.value!["email"] as! String
-                        
-                        // TODO: fix the 6 hour sub error
                         
                         let renewDate:NSDate = dateFormatter.dateFromString(date_fb)!
                         
@@ -262,10 +251,10 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                                 response["email"] = self.user_email
                                 response["pass"] = pass
                                 response["login_error"] = "none"
-                                
+                                break
                             } else if (end < current_date) {
                                 // Subscription has expired
-                                print("displayRenewing")
+                                print("expiredSub")
                                 response["login_error"] = "exp_error"
                             }
                         }
@@ -284,6 +273,15 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
             
             
 
+        } else if command == "getUserEmail" {
+            if let email = userEmail.stringForKey("email") {
+                response["email"] = email
+            } else {
+                // Error
+                // TODO: Don't let the user make a purchase as their
+                //       purchase will not be saved accross devices
+                response["email"] = "error"
+            }
         } else if command == "display_login" {
             print("displaying login")
             displayLogin()
@@ -483,8 +481,8 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                         print("monthly payments: \(trans.transactionState.rawValue)")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         isSubed.setObject("YES", forKey: "subed")
-                        renewDate = NSDate().dateByAddingTimeInterval(300) // 5 min
-//                        renewDate = NSDate().dateByAddingTimeInterval(2678400)
+//                        renewDate = NSDate().dateByAddingTimeInterval(300) // 5 min
+                        renewDate = NSDate().dateByAddingTimeInterval(2678400)
                         endSub_date.setObject(renewDate, forKey: "date")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         purchaseError = "false"
@@ -495,8 +493,8 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                         print("monthly payments: \(trans.transactionState.rawValue)")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         isSubed.setObject("YES", forKey: "subed")
-                        renewDate = NSDate().dateByAddingTimeInterval(600) // 10 min
-//                        renewDate = NSDate().dateByAddingTimeInterval(8035200)
+//                        renewDate = NSDate().dateByAddingTimeInterval(600) // 10 min
+                        renewDate = NSDate().dateByAddingTimeInterval(8035200)
                         endSub_date.setObject(renewDate, forKey: "date")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         purchaseError = "false"
@@ -507,8 +505,8 @@ class SwiftlyMessageHandler:NSObject, WKScriptMessageHandler, SKProductsRequestD
                         print("monthly payments: \(trans.transactionState.rawValue)")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         isSubed.setObject("YES", forKey: "subed")
-                        renewDate = NSDate().dateByAddingTimeInterval(1800) // 30 min
-//                        renewDate = NSDate().dateByAddingTimeInterval(32140800)
+//                        renewDate = NSDate().dateByAddingTimeInterval(1800) // 30 min
+                        renewDate = NSDate().dateByAddingTimeInterval(32140800)
                         endSub_date.setObject(renewDate, forKey: "date")
                         print("isSubed: ", isSubed.stringForKey("subed"))
                         purchaseError = "false"

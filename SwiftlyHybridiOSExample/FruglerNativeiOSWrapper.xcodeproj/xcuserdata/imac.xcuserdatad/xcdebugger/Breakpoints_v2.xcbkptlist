@@ -10,13 +10,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftlyHybridiOSExample/SwiftlyMessageHandler.swift"
-            timestampString = "489018579.22195"
+            timestampString = "489098925.723108"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "343"
-            endingLineNumber = "343"
-            landmarkName = "sendResponse(_:callback:)"
-            landmarkType = "5">
+            startingLineNumber = "341"
+            endingLineNumber = "341"
+            landmarkName = "sendResponse(aResponse:callback:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -26,13 +26,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftlyHybridiOSExample/SwiftlyMessageHandler.swift"
-            timestampString = "488838631.939845"
+            timestampString = "489101652.28324"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "182"
-            endingLineNumber = "182"
-            landmarkName = "userContentController(_:didReceiveScriptMessage:)"
-            landmarkType = "5">
+            startingLineNumber = "171"
+            endingLineNumber = "171"
+            landmarkName = "userContentController(userContentController:didReceiveScriptMessage:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -42,13 +42,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftlyHybridiOSExample/SwiftlyMessageHandler.swift"
-            timestampString = "488838631.939845"
+            timestampString = "489101652.28324"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "214"
-            endingLineNumber = "214"
-            landmarkName = "userContentController(_:didReceiveScriptMessage:)"
-            landmarkType = "5">
+            startingLineNumber = "204"
+            endingLineNumber = "204"
+            landmarkName = "userContentController(userContentController:didReceiveScriptMessage:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftlyHybridiOSExample/SwiftlyMessageHandler.swift"
-            timestampString = "489018579.22195"
+            timestampString = "489098925.723108"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "358"
-            endingLineNumber = "358"
+            startingLineNumber = "356"
+            endingLineNumber = "356"
             landmarkName = "SwiftlyMessageHandler"
             landmarkType = "3">
          </BreakpointContent>
@@ -74,13 +74,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftlyHybridiOSExample/SwiftlyMessageHandler.swift"
-            timestampString = "489018579.22195"
+            timestampString = "489098925.723108"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "387"
-            endingLineNumber = "387"
+            startingLineNumber = "385"
+            endingLineNumber = "385"
             landmarkName = "restorePurchases()"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -90,13 +90,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftlyHybridiOSExample/SwiftlyMessageHandler.swift"
-            timestampString = "489018579.22195"
+            timestampString = "489098925.723108"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "456"
-            endingLineNumber = "456"
-            landmarkName = "productsRequest(_:didReceiveResponse:)"
-            landmarkType = "5">
+            startingLineNumber = "454"
+            endingLineNumber = "454"
+            landmarkName = "productsRequest(request:didReceiveResponse:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -106,13 +106,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftlyHybridiOSExample/SwiftlyMessageHandler.swift"
-            timestampString = "489018579.22195"
+            timestampString = "489098925.723108"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "477"
-            endingLineNumber = "477"
-            landmarkName = "paymentQueue(_:updatedTransactions:)"
-            landmarkType = "5">
+            startingLineNumber = "475"
+            endingLineNumber = "475"
+            landmarkName = "paymentQueue(queue:updatedTransactions:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -122,13 +122,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftlyHybridiOSExample/SwiftlyMessageHandler.swift"
-            timestampString = "489018579.22195"
+            timestampString = "489098925.723108"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "578"
-            endingLineNumber = "578"
-            landmarkName = "finishTransaction(_:)"
-            landmarkType = "5">
+            startingLineNumber = "576"
+            endingLineNumber = "576"
+            landmarkName = "finishTransaction(trans:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -138,13 +138,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftlyHybridiOSExample/SwiftlyMessageHandler.swift"
-            timestampString = "489018579.22195"
+            timestampString = "489098925.723108"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "332"
-            endingLineNumber = "332"
-            landmarkName = "sendResponse(_:callback:)"
-            landmarkType = "5">
+            startingLineNumber = "330"
+            endingLineNumber = "330"
+            landmarkName = "sendResponse(aResponse:callback:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -172,13 +172,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftlyHybridiOSExample/SwiftlyMessageHandler.swift"
-            timestampString = "489018579.22195"
+            timestampString = "489098925.723108"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "340"
-            endingLineNumber = "340"
-            landmarkName = "sendResponse(_:callback:)"
-            landmarkType = "5">
+            startingLineNumber = "338"
+            endingLineNumber = "338"
+            landmarkName = "sendResponse(aResponse:callback:)"
+            landmarkType = "7">
             <Locations>
                <Location
                   shouldBeEnabled = "No"
@@ -220,13 +220,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftlyHybridiOSExample/SwiftlyMessageHandler.swift"
-            timestampString = "489018579.22195"
+            timestampString = "489098925.723108"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "329"
-            endingLineNumber = "329"
-            landmarkName = "sendResponse(_:callback:)"
-            landmarkType = "5">
+            startingLineNumber = "327"
+            endingLineNumber = "327"
+            landmarkName = "sendResponse(aResponse:callback:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -236,13 +236,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftlyHybridiOSExample/SwiftlyMessageHandler.swift"
-            timestampString = "488838631.939845"
+            timestampString = "489101652.28324"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "187"
-            endingLineNumber = "187"
-            landmarkName = "userContentController(_:didReceiveScriptMessage:)"
-            landmarkType = "5">
+            startingLineNumber = "176"
+            endingLineNumber = "176"
+            landmarkName = "userContentController(userContentController:didReceiveScriptMessage:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -252,13 +252,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftlyHybridiOSExample/SwiftlyMessageHandler.swift"
-            timestampString = "489018579.22195"
+            timestampString = "489098925.723108"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "451"
-            endingLineNumber = "451"
-            landmarkName = "productsRequest(_:didReceiveResponse:)"
-            landmarkType = "5">
+            startingLineNumber = "449"
+            endingLineNumber = "449"
+            landmarkName = "productsRequest(request:didReceiveResponse:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -268,13 +268,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftlyHybridiOSExample/SwiftlyMessageHandler.swift"
-            timestampString = "489018579.22195"
+            timestampString = "489098925.723108"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "483"
-            endingLineNumber = "483"
-            landmarkName = "paymentQueue(_:updatedTransactions:)"
-            landmarkType = "5">
+            startingLineNumber = "481"
+            endingLineNumber = "481"
+            landmarkName = "paymentQueue(queue:updatedTransactions:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -284,13 +284,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftlyHybridiOSExample/SwiftlyMessageHandler.swift"
-            timestampString = "488838631.939845"
+            timestampString = "489101652.28324"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "137"
-            endingLineNumber = "137"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
             landmarkName = "init(theController:)"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -300,11 +300,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftlyHybridiOSExample/SwiftlyMessageHandler.swift"
-            timestampString = "488838631.939845"
+            timestampString = "489101652.28324"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "143"
-            endingLineNumber = "143"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
             landmarkName = "SwiftlyMessageHandler"
             landmarkType = "3">
          </BreakpointContent>
@@ -316,13 +316,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftlyHybridiOSExample/SwiftlyMessageHandler.swift"
-            timestampString = "489018579.22195"
+            timestampString = "489098925.723108"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "397"
-            endingLineNumber = "397"
+            startingLineNumber = "395"
+            endingLineNumber = "395"
             landmarkName = "buyMonthlySub()"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -332,13 +332,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SwiftlyHybridiOSExample/SwiftlyMessageHandler.swift"
-            timestampString = "489018579.22195"
+            timestampString = "489098925.723108"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "570"
-            endingLineNumber = "570"
-            landmarkName = "paymentQueueRestoreCompletedTransactionsFinished(_:)"
-            landmarkType = "5">
+            startingLineNumber = "568"
+            endingLineNumber = "568"
+            landmarkName = "paymentQueueRestoreCompletedTransactionsFinished(queue:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
